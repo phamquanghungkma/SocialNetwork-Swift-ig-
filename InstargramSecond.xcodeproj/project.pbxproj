@@ -7,21 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1826B8EE23EB19ED00F4087B /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1826B8ED23EB19ED00F4087B /* SignUpVC.swift */; };
 		18A189D323E737FC001237C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A189D223E737FC001237C1 /* AppDelegate.swift */; };
-		18A189D523E737FC001237C1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A189D423E737FC001237C1 /* ViewController.swift */; };
-		18A189D823E737FC001237C1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18A189D623E737FC001237C1 /* Main.storyboard */; };
 		18A189DA23E737FE001237C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18A189D923E737FE001237C1 /* Assets.xcassets */; };
 		18A189DD23E737FE001237C1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18A189DB23E737FE001237C1 /* LaunchScreen.storyboard */; };
+		18A189EA23E739D0001237C1 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A189E923E739D0001237C1 /* LoginVC.swift */; };
+		18A189ED23E73F46001237C1 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A189EC23E73F46001237C1 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1826B8ED23EB19ED00F4087B /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
 		18A189CF23E737FC001237C1 /* InstargramSecond.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstargramSecond.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18A189D223E737FC001237C1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		18A189D423E737FC001237C1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		18A189D723E737FC001237C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		18A189D923E737FE001237C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		18A189DC23E737FE001237C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		18A189DE23E737FE001237C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		18A189E923E739D0001237C1 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		18A189EC23E73F46001237C1 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +56,47 @@
 		18A189D123E737FC001237C1 /* InstargramSecond */ = {
 			isa = PBXGroup;
 			children = (
+				18A189EB23E73F0C001237C1 /* Utlis */,
+				18A189E623E73978001237C1 /* Controller */,
+				18A189E523E73973001237C1 /* View */,
+				18A189E423E73968001237C1 /* Model */,
 				18A189D223E737FC001237C1 /* AppDelegate.swift */,
-				18A189D423E737FC001237C1 /* ViewController.swift */,
-				18A189D623E737FC001237C1 /* Main.storyboard */,
 				18A189D923E737FE001237C1 /* Assets.xcassets */,
 				18A189DB23E737FE001237C1 /* LaunchScreen.storyboard */,
 				18A189DE23E737FE001237C1 /* Info.plist */,
 			);
 			path = InstargramSecond;
+			sourceTree = "<group>";
+		};
+		18A189E423E73968001237C1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		18A189E523E73973001237C1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		18A189E623E73978001237C1 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				18A189E923E739D0001237C1 /* LoginVC.swift */,
+				1826B8ED23EB19ED00F4087B /* SignUpVC.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		18A189EB23E73F0C001237C1 /* Utlis */ = {
+			isa = PBXGroup;
+			children = (
+				18A189EC23E73F46001237C1 /* Extensions.swift */,
+			);
+			path = Utlis;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -124,7 +159,6 @@
 			files = (
 				18A189DD23E737FE001237C1 /* LaunchScreen.storyboard in Resources */,
 				18A189DA23E737FE001237C1 /* Assets.xcassets in Resources */,
-				18A189D823E737FC001237C1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,7 +169,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18A189D523E737FC001237C1 /* ViewController.swift in Sources */,
+				18A189EA23E739D0001237C1 /* LoginVC.swift in Sources */,
+				1826B8EE23EB19ED00F4087B /* SignUpVC.swift in Sources */,
+				18A189ED23E73F46001237C1 /* Extensions.swift in Sources */,
 				18A189D323E737FC001237C1 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -143,14 +179,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		18A189D623E737FC001237C1 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				18A189D723E737FC001237C1 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		18A189DB23E737FE001237C1 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -285,6 +313,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A9U2HJVMSX;
 				INFOPLIST_FILE = InstargramSecond/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -303,6 +332,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A9U2HJVMSX;
 				INFOPLIST_FILE = InstargramSecond/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
