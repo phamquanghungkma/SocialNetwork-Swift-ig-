@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>912314500221-659jk3d277of9alg150ar0asolo1mmmm.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.912314500221-659jk3d277of9alg150ar0asolo1mmmm</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBH63Ewwg1oBy7Ibl_9x2zuwOe97aMC8o4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>912314500221</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>tofu.company.InstargramSecond</string>
+	<key>PROJECT_ID</key>
+	<string>instagramsecond-454b8</string>
+	<key>STORAGE_BUCKET</key>
+	<string>instagramsecond-454b8.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:912314500221:ios:cbe90ee1ce70fe88e4dd14</string>
+	<key>DATABASE_URL</key>
+	<string>https://instagramsecond-454b8.firebaseio.com</string>
+</dict>
+</plist>
