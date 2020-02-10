@@ -10,7 +10,7 @@ target 'InstargramSecond' do
 # add the Firebase pod for Google Analytics
 	pod 'Firebase/Auth'
 	pod 'Firebase/Database'
-	pod 'Firebase/Storage'
+	pod 'Firebase/Storage','~>4.0'
 	
 
 
