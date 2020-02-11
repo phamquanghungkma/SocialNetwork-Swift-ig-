@@ -190,6 +190,8 @@ class SignUpVC: UIViewController,UIImagePickerControllerDelegate,UINavigationCon
                     
                     let dictionaryValues = ["names":fullname,
                                             "username":username,
+                                            "email":email,
+                                            "password":password,
                                             "profileImageURL": profileImageUrl as Any] as [String : Any]
                     
                     let values = [uid:dictionaryValues]
@@ -202,6 +204,9 @@ class SignUpVC: UIViewController,UIImagePickerControllerDelegate,UINavigationCon
             
             // success
             print("Succesfully created user with Firebase")
+            self.navigationController?.popViewController(animated: true)
+
+            
         }
     }
     @objc func formValidation(){

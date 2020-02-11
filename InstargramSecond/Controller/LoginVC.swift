@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class LoginVC: UIViewController {
     
@@ -32,6 +33,7 @@ class LoginVC: UIViewController {
         tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 14)
+        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         
         return tf
     }() 
@@ -42,7 +44,8 @@ class LoginVC: UIViewController {
         tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 14)
-        
+        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
+        tf.isSecureTextEntry = true
         return tf
     }()
     
@@ -52,7 +55,9 @@ class LoginVC: UIViewController {
                 button.setTitle("Login", for: .normal)
                 button.setTitleColor(.white, for: .normal)
                 button.backgroundColor = UIColor(red:194/255,green:204/255,blue:244/255,alpha:1)
+                button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
                 button.layer.cornerRadius = 5
+                button.isEnabled = false
             return button
     }()
     
@@ -85,7 +90,8 @@ class LoginVC: UIViewController {
         
         view.addSubview(logoContainerView)
         logoContainerView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 150)
-       configureViewComponents()
+      
+        configureViewComponents()
         
         
        
@@ -97,6 +103,47 @@ class LoginVC: UIViewController {
         let signUpVC = SignUpVC()
         navigationController?.pushViewController(signUpVC, animated: true)
     }
+    
+    @objc func handleLogin(){
+        print("Handle login here")
+        
+        guard let email = emailTextField.text,
+           let password = passwordTextField.text else {return}
+        // sign in with email and password
+        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+            
+            // handle error
+            if let error = error {
+                print("Unable to sign user in error",error.localizedDescription)
+                return
+            }
+            // handle success
+            print("Successly Sign user in")
+            
+            let mainTabVC = MainTabVC()
+            self.present(mainTabVC ,animated: true, completion: nil )
+        }
+        
+    }
+    
+    @objc func formValidation(){
+        guard
+            emailTextField.hasText,
+            passwordTextField.hasText
+            else {
+//                handle case for above conditions not met
+                logginButton.isEnabled  = false
+                logginButton.backgroundColor = UIColor(red:194/255,green:204/255,blue:244/255,alpha:1)
+                return
+        }
+//       handle case for above conditions were met
+        logginButton.isEnabled = true
+        logginButton.backgroundColor = UIColor(red:17/255,green:154/255,blue:237/255,alpha:1)
+        
+        
+    }
+    
+    
     
     func configureViewComponents(){
         
