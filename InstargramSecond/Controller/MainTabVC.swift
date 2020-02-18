@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class MainTabVC: UITabBarController, UITabBarControllerDelegate{
 
@@ -18,6 +19,9 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate{
         
         //configure view controllers
         configureViewControllers()
+        
+        //user validation
+        checkIfUserIsLoggedIn()
         
         
     }
@@ -53,6 +57,23 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate{
         
         return navController
         // everytime we call this fucntion, it's going to return a navigation controller with whatever we set 
+    }
+    
+    func checkIfUserIsLoggedIn(){
+        if Auth.auth().currentUser == nil {
+            DispatchQueue.main.async {
+                // present login controller
+                let loginVC  = LoginVC()
+                let navController = UINavigationController(rootViewController: loginVC)
+                self.present(navController,animated:true,completion: nil)
+            }
+            
+                    return
+            
+        }
+        else {
+            print("User is logged in")
+        }
     }
 
    

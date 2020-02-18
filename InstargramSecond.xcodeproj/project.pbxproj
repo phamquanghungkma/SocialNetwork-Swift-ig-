@@ -21,6 +21,7 @@
 		18B96AF323F30361002C4A04 /* NotificationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B96AF223F30361002C4A04 /* NotificationsVC.swift */; };
 		18B96AF523F30385002C4A04 /* UserProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B96AF423F30385002C4A04 /* UserProfileVC.swift */; };
 		18D37A6223EC05BC00D3DBFC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18D37A6123EC05BC00D3DBFC /* GoogleService-Info.plist */; };
+		18F2D16F23FA81B20095382D /* UserProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F2D16E23FA81B20095382D /* UserProfileHeader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		18B96AF223F30361002C4A04 /* NotificationsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsVC.swift; sourceTree = "<group>"; };
 		18B96AF423F30385002C4A04 /* UserProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileVC.swift; sourceTree = "<group>"; };
 		18D37A6123EC05BC00D3DBFC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		18F2D16E23FA81B20095382D /* UserProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeader.swift; sourceTree = "<group>"; };
 		800631215BCA1153738FEBFA /* Pods-InstargramSecond.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstargramSecond.release.xcconfig"; path = "Target Support Files/Pods-InstargramSecond/Pods-InstargramSecond.release.xcconfig"; sourceTree = "<group>"; };
 		8C5D628C1A47CFC3E7B2636B /* libPods-InstargramSecond.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-InstargramSecond.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -56,6 +58,56 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1831D4C623F39A0B000B466F /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				1826B8ED23EB19ED00F4087B /* SignUpVC.swift */,
+				18A189E923E739D0001237C1 /* LoginVC.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		1831D4C723F39AB5000B466F /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+				18B96AEC23F30299002C4A04 /* FeedVC.swift */,
+			);
+			path = Feed;
+			sourceTree = "<group>";
+		};
+		1831D4C823F39AC6000B466F /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				18B96AEE23F302D6002C4A04 /* SearchVC.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		1831D4C923F39AD8000B466F /* UploadPost */ = {
+			isa = PBXGroup;
+			children = (
+				18B96AF023F3030C002C4A04 /* UploadPostVC.swift */,
+			);
+			path = UploadPost;
+			sourceTree = "<group>";
+		};
+		1831D4CA23F39AEC000B466F /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				18B96AF223F30361002C4A04 /* NotificationsVC.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
+		1831D4CB23F39B00000B466F /* UserProfile */ = {
+			isa = PBXGroup;
+			children = (
+				18B96AF423F30385002C4A04 /* UserProfileVC.swift */,
+				18F2D16E23FA81B20095382D /* UserProfileHeader.swift */,
+			);
+			path = UserProfile;
+			sourceTree = "<group>";
+		};
 		18A189C623E737FC001237C1 = {
 			isa = PBXGroup;
 			children = (
@@ -107,14 +159,13 @@
 		18A189E623E73978001237C1 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				18A189E923E739D0001237C1 /* LoginVC.swift */,
-				1826B8ED23EB19ED00F4087B /* SignUpVC.swift */,
+				1831D4CB23F39B00000B466F /* UserProfile */,
+				1831D4CA23F39AEC000B466F /* Notifications */,
+				1831D4C923F39AD8000B466F /* UploadPost */,
+				1831D4C823F39AC6000B466F /* Search */,
+				1831D4C723F39AB5000B466F /* Feed */,
+				1831D4C623F39A0B000B466F /* Login */,
 				18B96AEA23F2F660002C4A04 /* MainTabVC.swift */,
-				18B96AEC23F30299002C4A04 /* FeedVC.swift */,
-				18B96AEE23F302D6002C4A04 /* SearchVC.swift */,
-				18B96AF023F3030C002C4A04 /* UploadPostVC.swift */,
-				18B96AF223F30361002C4A04 /* NotificationsVC.swift */,
-				18B96AF423F30385002C4A04 /* UserProfileVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -241,6 +292,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18F2D16F23FA81B20095382D /* UserProfileHeader.swift in Sources */,
 				18B96AED23F30299002C4A04 /* FeedVC.swift in Sources */,
 				18B96AF323F30361002C4A04 /* NotificationsVC.swift in Sources */,
 				18B96AF123F3030C002C4A04 /* UploadPostVC.swift in Sources */,
