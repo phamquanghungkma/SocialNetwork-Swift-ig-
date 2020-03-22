@@ -2,22 +2,33 @@ import UIKit
 
 class UserProfileHeader: UICollectionViewCell {
     
+    var user: User? {
+//        didSet will get called immediately when the user property is already se
+        didSet {
+// as soon as user is set value, didSet get called, create fullName having value = user.name and set nameLabel = fullName
+            let fullName = user?.name
+            nameLabel.text = fullName
+            
+            guard let profileImageUrl = user?.profileImage else {return}
+            profileImageView.loadImage(with:profileImageUrl)
+        }
+    }
+    
     let  profileImageView : UIImageView  = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
         return iv
+        
     }()
     
     let nameLabel: UILabel = {
        let label = UILabel()
-        label.text = "Health Ledger"
         label.font = UIFont.boldSystemFont(ofSize: 12)
-        
-        
         return label
     }()
+    
     let postLabel: UILabel = {
        let label = UILabel()
         label.numberOfLines = 0

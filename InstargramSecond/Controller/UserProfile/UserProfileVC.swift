@@ -4,7 +4,6 @@
 //
 //  Created by Apple on 2/11/20.
 //  Copyright © 2020 Tofu. All rights reserved.
-//
 
 import UIKit
 import Firebase
@@ -13,7 +12,8 @@ private let reuseIdentifier = "Cell"
 private let headerIdentifier = "UserProfileHeader"
 
 class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
-
+    
+    var user: User?
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -49,11 +49,27 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         
         return CGSize(width: view.frame.width, height: 200)
     }
+    
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
            // Declare header
-           let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier, for: indexPath) as! UserProfileHeader
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier, for: indexPath) as! UserProfileHeader
+         let currentUid = Auth.auth().currentUser?.uid
         
+        Database.database().reference().child("users").child(currentUid!).observeSingleEvent(of: .value){
+                  (snapshot) in
+                      print(snapshot)// snapshot la du lieu tren server gui ve
+                  
+            guard let dictionaryData = snapshot.value as? Dictionary<String,AnyObject> else {return}
+            let uid = snapshot.key
+            
+            let userData = User(uid: uid, dictionary: dictionaryData)
+            self.navigationItem.title = userData.username
+            header.user = userData
+            
+          
+         }
         // Return header
+        
            return header
        }
  
@@ -68,16 +84,9 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     // MARK : API, get userData from DB
     func fetchCurrentUserData(){
         
-        guard let currentUid = Auth.auth().currentUser?.uid else {return}
-        print("Current user id is \(currentUid)")
         
         
-        Database.database().reference().child("users").child(currentUid).child("username").observeSingleEvent(of: .value){
-            (snapshot) in
-
-            guard let username = snapshot.value as? String else {return}
-            self.navigationItem.title = username // set tittle cho man hinh profileUser
-        }
+      
     }
  
 
