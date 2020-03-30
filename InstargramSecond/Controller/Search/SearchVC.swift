@@ -7,84 +7,99 @@
 //
 
 import UIKit
+import Firebase
+
+private let reuseIdentifier = "SearchUserCell"
 
 class SearchVC: UITableViewController {
 
+    
+    //Mark : properties
+    var users = [User]()// create an array user
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        //register cell classesxs
+        tableView.register(SearchUserCell.self, forCellReuseIdentifier: reuseIdentifier )
+        
+        // separator insets
+        tableView.separatorInset = UIEdgeInsets(top:0, left: 64, bottom:0 , right: 0)
+        
+        //configured nav controller
+        configureNavController()
+        
+        fetchUsers()     // fetchUser
+        
+        print("When view loads user array count is \(users.count)")
     }
 
     // MARK: - Table view data source
-
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        print("Number of Rows is \(users.count)")
+       
+        return users.count
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        let user = users[1]
+        let user = users[indexPath.row]
 
-    /*
+        // event as touching an item
+        print("Username is \(user.username)")
+        // create  instance of user profile vc
+        let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        // pass user from searchVC to userProfile
+        userProfileVC.userToLoadFromSearchVC = user
+        
+        //push view controll
+        navigationController?.pushViewController(userProfileVC, animated: true)
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        // hàm này sẽ chạy số lần tuỳ thuộc bao nhiêu phần tử của list,
+        // ví dụ trong numberOfRowInSection return 5 thì hàm này sẽ chạy 5 lần 
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! SearchUserCell
+        
+        cell.user = users[indexPath.row]
+        // cell.user la truy cap den user property tai SearchUserCell.swift
+        
         return cell
     }
-    */
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+//    MARK : handler
+    func configureNavController(){
+        navigationItem.title = "Explorer"
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    
+    func fetchUsers(){
+        Database.database().reference().child("users").observe(.childAdded){
+            // lay het danh sach user trong database
+            // snapshot du lieu gui ve
+            (snapshot) in
+            
+            guard let dictionary = snapshot.value as? Dictionary<String,AnyObject> else {return}
+            let uid = snapshot.key
+            
+            //construct user
+            let user = User(uid: uid, dictionary: dictionary)
+            
+            // add list User get from server to users array been created
+            self.users.append(user)
+            // reload our table view
+            self.tableView.reloadData()
+            
+        
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+}
 }

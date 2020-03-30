@@ -13,7 +13,9 @@ private let headerIdentifier = "UserProfileHeader"
 
 class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     
-    var user: User?
+    var currentUser: User?
+    var userToLoadFromSearchVC: User?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,7 +28,11 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         self.collectionView?.backgroundColor = .white
 
         //fetch user data
-        fetchCurrentUserData()
+        if userToLoadFromSearchVC == nil{
+            fetchCurrentUserData()
+        }
+        
+       
     }
 
 
@@ -39,6 +45,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
+
         return 0
     }
     
@@ -46,28 +53,22 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     // config size for header
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        
+
         return CGSize(width: view.frame.width, height: 200)
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+
            // Declare header
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier, for: indexPath) as! UserProfileHeader
-         let currentUid = Auth.auth().currentUser?.uid
         
-        Database.database().reference().child("users").child(currentUid!).observeSingleEvent(of: .value){
-                  (snapshot) in
-                      print(snapshot)// snapshot la du lieu tren server gui ve
-                  
-            guard let dictionaryData = snapshot.value as? Dictionary<String,AnyObject> else {return}
-            let uid = snapshot.key
-            
-            let userData = User(uid: uid, dictionary: dictionaryData)
-            self.navigationItem.title = userData.username
-            header.user = userData
-            
-          
-         }
+        if let user = self.currentUser {
+            header.user = user
+        } else if let userToLoadFromSearchVC = self.userToLoadFromSearchVC {
+            header.user = userToLoadFromSearchVC
+            self.navigationItem.title = userToLoadFromSearchVC.username
+
+        }
         // Return header
         
            return header
@@ -83,7 +84,24 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     // MARK : API, get userData from DB
     func fetchCurrentUserData(){
-        
+        guard let currentUid = Auth.auth().currentUser?.uid else {return}
+             
+             Database.database().reference().child("users").child(currentUid).observeSingleEvent(of: .value){
+                       (snapshot) in
+                           print(snapshot)// snapshot la du lieu tren server gui ve
+                       
+                 guard let dictionaryData = snapshot.value as? Dictionary<String,AnyObject> else {return}
+                 let uid = snapshot.key
+                 let userData = User(uid: uid, dictionary: dictionaryData)
+                 self.currentUser = userData
+                
+                // Set navigationItem
+               
+                 self.navigationItem.title = userData.username
+                self.collectionView?.reloadData()
+                
+
+              }
         
         
       

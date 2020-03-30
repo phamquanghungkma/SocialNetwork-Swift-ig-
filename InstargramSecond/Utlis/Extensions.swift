@@ -9,16 +9,16 @@
 import UIKit
 
 extension UIView{
-    
+    // this is a function
     func anchor(
         top:NSLayoutYAxisAnchor?,
         left:NSLayoutXAxisAnchor?,
         bottom:NSLayoutYAxisAnchor?,
         right:NSLayoutXAxisAnchor?,
-        paddingTop:CGFloat,
-        paddingLeft:CGFloat,
-        paddingBottom:CGFloat,
-        paddingRight:CGFloat,
+        paddingTop:CGFloat,// gia tri
+        paddingLeft:CGFloat,// gia tri
+        paddingBottom:CGFloat,// gia tri
+        paddingRight:CGFloat,// gia tri
         width:CGFloat,
         height:CGFloat
         ) {
@@ -47,44 +47,31 @@ extension UIView{
     }
     
 }
-var imageCache = [String: UIImage]()
+    var imageCache = [String: UIImage]() // initalize an empty dictionary
 
 extension UIImageView{
     func loadImage(with urlString: String ){
         
-        // check if image exist in cache
+        // check if image exist in cache ( check urlString if exist in Dictionary)
         if let cachedImage = imageCache[urlString]{
             self.image = cachedImage
             return
         }
         
         // url for image location
-        
         guard let url = URL(string: urlString) else {return}
-        
         //fetch content of URL
-        
         URLSession.shared.dataTask(with: url) { (data,respone,error) in
-            
             // handle error
-            if let error = error {
-                print("failed to load Image with error : \(error.localizedDescription)")
-                
-            }
+            if let error = error { print("failed to load Image with error : \(error.localizedDescription)")}
             //image Data
             guard let imageData = data else { return }
-            
             // set image using imageData
             let photoImage = UIImage(data: imageData)
-            
             // set key and value for image cache
             imageCache[url.absoluteString] = photoImage
-            
             // set image
-            DispatchQueue.main.async{
-                self.image = photoImage
-                
-            }
+            DispatchQueue.main.async{ self.image = photoImage}
         }.resume()
     }
 }
