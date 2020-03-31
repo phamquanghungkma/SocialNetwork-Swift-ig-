@@ -3,12 +3,18 @@ import Firebase
 
 class UserProfileHeader: UICollectionViewCell {
     
+//    MARK : Properties
+    var delegate: UserProfileHeaderDelegate?
     var user: User? {
 //        didSet will get called immediately when the user property is already se
         didSet {
             //config editProfileButton
             configuredEditProfileFollowButton()
+            
+            //set User status
+            setUserStats(for: user)
 // as soon as user is set value, didSet get called, create fullName having value = user.name and set nameLabel = fullName
+        
             
             let fullName = user?.name
             nameLabel.text = fullName
@@ -49,10 +55,8 @@ class UserProfileHeader: UICollectionViewCell {
          let label = UILabel()
           label.numberOfLines = 0
           label.textAlignment = .center
-        let attributedText = NSMutableAttributedString(string:"5\n",attributes:[NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 14)])
-             
-        attributedText.append(NSAttributedString(string:"followers",attributes:[NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 14), NSAttributedString.Key.foregroundColor:UIColor.lightGray]))
-             label.attributedText = attributedText
+   
+          
           
           return label
       }()
@@ -100,26 +104,73 @@ class UserProfileHeader: UICollectionViewCell {
           return button
       }()
     
+    // MARK: - Handlers
     
-    
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        addSubview(profileImageView)
-        profileImageView.anchor(top: self.topAnchor, left: self.leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 80, height: 80 )
-        profileImageView.layer.cornerRadius = 80 / 2
-        
-        addSubview(nameLabel)
-        nameLabel.anchor(top: profileImageView.bottomAnchor, left: self.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-            
-        configUserStatus()
-        
-        addSubview(editProfileFollowButton)
-        editProfileFollowButton.anchor(top: postLabel.bottomAnchor, left: postLabel.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 12, width: 0, height: 30)
-        
-            configButtonToolBar()
+    @objc func handleFollowersTapped() {
+        delegate?.handleFollowersTapped(for: self)
     }
     
+    @objc func handleFollowingTapped() {
+        delegate?.handleFollowingTapped(for: self)
+    }
+
+    @objc func handleEditProfileFollow() {
+        
+//        delegate?.handleEditFollowTapped(for: self)
+        guard let user = self.user else {return}
+        
+        if editProfileFollowButton.titleLabel?.text == "Edit Profile"{
+            print("Handle edit profile")
+        }
+        else{
+            if editProfileFollowButton.titleLabel?.text == "Follow"{
+                editProfileFollowButton.setTitle("Following", for: .normal)
+                user.follow()
+            }else{
+                editProfileFollowButton.setTitle("Follow", for: .normal)
+                user.unfollow()
+            }
+        }
+    }
+    
+    // get the number of Follower and Following
+    func setUserStats(for user: User?) {
+//        delegate?.setUserStats(for: self)
+        guard let uid = user?.uid else { return}
+             
+             var numberOfFollowers: Int!
+             var numberOfFollowing: Int!
+             
+             //get number of Followers
+             USER_FOLLOWER_REF.child(uid).observeSingleEvent(of: .value){ (snapshot) in
+                 if let snapshot = snapshot.value as? Dictionary<String,AnyObject>{
+                     numberOfFollowers  = snapshot.count
+                 }else{
+                     numberOfFollowers = 0
+                 }
+                  
+                 let attributedText = NSMutableAttributedString(string:"\(numberOfFollowers!)\n",attributes:[NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 14)])
+                   attributedText.append(NSAttributedString(string:"followers",attributes:[NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 14), NSAttributedString.Key.foregroundColor:UIColor.lightGray]))
+                 self.followersLabel.attributedText = attributedText
+             }
+             
+             //get number of Following
+                USER_FOLLOWING_REF.child(uid).observeSingleEvent(of: .value){ (snapshot) in
+                    if let snapshot = snapshot.value as? Dictionary<String,AnyObject>{
+                        numberOfFollowing  = snapshot.count
+                    }else{
+                        numberOfFollowing = 0
+                    }
+                 let attributedText = NSMutableAttributedString(string:"\(numberOfFollowing!)\n",attributes:[NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 14)])
+                          attributedText.append(NSAttributedString(string:"following",attributes:[NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 14), NSAttributedString.Key.foregroundColor:UIColor.lightGray]))
+                 self.followingLabel.attributedText = attributedText
+
+                }
+    }
+    
+    
+    
+
     func configButtonToolBar(){
         
         let topDividerView = UIView()
@@ -143,6 +194,7 @@ class UserProfileHeader: UICollectionViewCell {
         
         bottomDividerView.anchor(top: stackView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
     }
+    
     func  configUserStatus(){
         
         let stackView = UIStackView(arrangedSubviews: [postLabel,followersLabel,followingLabel])
@@ -151,6 +203,7 @@ class UserProfileHeader: UICollectionViewCell {
         addSubview(stackView)
         stackView.anchor(top: topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 50)
     }
+ 
     
     func configuredEditProfileFollowButton(){
         guard let currentUid = Auth.auth().currentUser?.uid else {return}
@@ -162,11 +215,45 @@ class UserProfileHeader: UICollectionViewCell {
         }
         else {
             // config button as follow button
-            editProfileFollowButton.setTitle("Follow", for: .normal)
-            editProfileFollowButton.setTitleColor(.white, for: .normal)
-            editProfileFollowButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
+//                       editProfileFollowButton.setTitle("Follow", for: .normal)
+                editProfileFollowButton.setTitleColor(.white, for: .normal)
+                editProfileFollowButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
+            
+            user.checkIfUserIsFollowed(completion: {(followed) in
+                
+                if followed {
+                    self.editProfileFollowButton.setTitle("Following", for: .normal)
+                }
+                else{
+                    self.editProfileFollowButton.setTitle("Follow", for: .normal)
+                }
+            })
+           
         }
     }
+    
+    
+    //    MARK: init()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        addSubview(profileImageView)
+        profileImageView.anchor(top: self.topAnchor, left: self.leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 80, height: 80 )
+        profileImageView.layer.cornerRadius = 80 / 2
+        
+        addSubview(nameLabel)
+        nameLabel.anchor(top: profileImageView.bottomAnchor, left: self.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+            
+        configUserStatus()
+        
+        addSubview(editProfileFollowButton)
+        editProfileFollowButton.anchor(top: postLabel.bottomAnchor, left: postLabel.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 12, width: 0, height: 30)
+        
+            configButtonToolBar()
+    }
+    
+    
+    
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

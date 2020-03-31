@@ -11,8 +11,9 @@ import Firebase
 private let reuseIdentifier = "Cell"
 private let headerIdentifier = "UserProfileHeader"
 
-class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
+class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,UserProfileHeaderDelegate{
     
+//  MARK: Properties
     var currentUser: User?
     var userToLoadFromSearchVC: User?
     
@@ -82,7 +83,48 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
      
         return cell
     }
-    // MARK : API, get userData from DB
+//    MARK: handler
+      
+          func handleEditFollowTapped(for header: UserProfileHeader) {
+             
+    //         guard let user = header.user else { return }
+    //
+    //         if header.editProfileFollowButton.titleLabel?.text == "Edit Profile" {
+    //
+    //             let editProfileController = EditProfileController()
+    //             editProfileController.user = user
+    //             editProfileController.userProfileController = self
+    //             let navigationController = UINavigationController(rootViewController: editProfileController)
+    //             present(navigationController, animated: true, completion: nil)
+    //
+    //         } else {
+    //             // handles user follow/unfollow
+    //             if header.editProfileFollowButton.titleLabel?.text == "Follow" {
+    //                 header.editProfileFollowButton.setTitle("Following", for: .normal)
+    //                 user.follow()
+    //             } else {
+    //                 header.editProfileFollowButton.setTitle("Follow", for: .normal)
+    //                 user.unfollow()
+    //             }
+    //         }
+         }
+        
+        func setUserStats(for header: UserProfileHeader) {
+            
+        }
+        
+        func handleFollowersTapped(for header: UserProfileHeader) {
+            
+        }
+        
+        func handleFollowingTapped(for header: UserProfileHeader) {
+            
+        }
+    
+    
+    
+    
+    // MARK: API, get userData from DB
     func fetchCurrentUserData(){
         guard let currentUid = Auth.auth().currentUser?.uid else {return}
              
