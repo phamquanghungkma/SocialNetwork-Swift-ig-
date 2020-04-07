@@ -16,6 +16,7 @@
 //    func configureCommentIndicatorView(for cell: FeedCell)
 //}
 
+
 protocol UserProfileHeaderDelegate {
     func handleEditFollowTapped(for header: UserProfileHeader)
     func setUserStats(for header: UserProfileHeader)
@@ -37,9 +38,9 @@ protocol UserProfileHeaderDelegate {
 //    func handleSelectImage()
 //}
 //
-//protocol FollowCellDelegate {
-//    func handleFollowTapped(for cell: FollowLikeCell)
-//}
+protocol FollowCellDelegate {
+    func handleFollowTapped(for cell: FollowCell)
+}
 //
 //protocol ChatCellDelegate {
 //    func handlePlayVideo(for cell: ChatCell)

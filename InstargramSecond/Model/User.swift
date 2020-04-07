@@ -78,7 +78,7 @@ class User {
            USER_FOLLOWING_REF.child(currentUid).observeSingleEvent(of: .value) { (snapshot) in
                
                if snapshot.hasChild(self.uid) {
-                   self.isFollowed = true 
+                   self.isFollowed = true
                     print("User is followed")
                    completion(true)
                } else {

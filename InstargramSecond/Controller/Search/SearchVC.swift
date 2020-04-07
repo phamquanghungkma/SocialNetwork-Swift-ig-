@@ -28,6 +28,7 @@ class SearchVC: UITableViewController {
         //configured nav controller
         configureNavController()
         
+        
         fetchUsers()     // fetchUser
         
         print("When view loads user array count is \(users.count)")
@@ -60,7 +61,7 @@ class SearchVC: UITableViewController {
         let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
         
         // pass user from searchVC to userProfile
-        userProfileVC.userToLoadFromSearchVC = user
+        userProfileVC.user = user
         
         //push view controll
         navigationController?.pushViewController(userProfileVC, animated: true)
@@ -88,16 +89,13 @@ class SearchVC: UITableViewController {
             // snapshot du lieu gui ve
             (snapshot) in
             
-            guard let dictionary = snapshot.value as? Dictionary<String,AnyObject> else {return}
             let uid = snapshot.key
+            Database.fetchUser(with: uid, completion: { (user) in
+                self.users.append(user)
+                self.tableView.reloadData()
+            })
             
-            //construct user
-            let user = User(uid: uid, dictionary: dictionary)
-            
-            // add list User get from server to users array been created
-            self.users.append(user)
-            // reload our table view
-            self.tableView.reloadData()
+       
             
         
     }
