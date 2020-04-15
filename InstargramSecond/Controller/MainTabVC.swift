@@ -33,20 +33,41 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate{
         //search feed controller
         let searchVC = constructNavController(unselectedImage: UIImage(named: "search_unselected")!, selectedImage: UIImage(named: "search_selected")!,rootViewController: SearchVC())
         
-        //post controller
-        let uploadPostVC = constructNavController(unselectedImage: UIImage(named:"plus_unselected")!, selectedImage:  UIImage(named:"plus_unselected")!, rootViewController: UploadPostVC())
+        //select image controlle
+//        let uploadPostVC = constructNavController(unselectedImage: UIImage(named:"plus_unselected")!, selectedImage:  UIImage(named:"plus_unselected")!, rootViewController: UploadPostVC())
         
+//
+        let selectImageVC = constructNavController(unselectedImage: UIImage(named:"plus_unselected")!, selectedImage: UIImage(named:"plus_unselected")!)
         // notification controller
         let notificationVC = constructNavController(unselectedImage: UIImage(named:"like_unselected")!, selectedImage: UIImage(named:"like_selected")!, rootViewController: NotificationsVC() )
         
         // profile controller
         let userProfileVC = constructNavController(unselectedImage: UIImage(named:"profile_unselected")!, selectedImage: UIImage(named:"profile_selected")!, rootViewController: UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout()))
+        
         //view controller to be added to tab controller
-        viewControllers = [feedVC,searchVC,uploadPostVC,notificationVC,userProfileVC]
+        viewControllers = [feedVC,searchVC,selectImageVC,notificationVC,userProfileVC]
         
         //tab bar tinit color
         tabBar.tintColor = .black
     }
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        let index = viewControllers?.index(of: viewController)// thu tu tab i 
+        print("Index : \(index!)")
+        
+        if index == 2 {
+            let selectImageVC = SelectImageVC(collectionViewLayout: UICollectionViewFlowLayout())
+//            selectImageVC.modalPresentationStyle = .popover
+            let navController = UINavigationController(rootViewController: selectImageVC)
+            navController.modalPresentationStyle = .fullScreen //tu them vao
+            present(navController,animated: true,completion: nil)
+
+            
+            return false
+        }
+        
+        return true
+    }
+    
     // construct navigation controller
     func constructNavController(unselectedImage:UIImage,selectedImage:UIImage,rootViewController:UIViewController = UIViewController())->UINavigationController{
         // construc nav controller
@@ -65,6 +86,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate{
                 // present login controller
                 let loginVC  = LoginVC()
                 let navController = UINavigationController(rootViewController: loginVC)
+                navController.navigationBar.tintColor = .black
                 self.present(navController,animated:true,completion: nil)
             }
             
