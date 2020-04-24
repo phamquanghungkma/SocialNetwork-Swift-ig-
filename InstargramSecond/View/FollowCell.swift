@@ -19,7 +19,7 @@ class FollowCell: UITableViewCell {
            
            didSet{
                
-               guard let profileImageUrl = user?.profileImage else {return}
+               guard let profileImageUrl = user?.profileImageUrl else {return}
                guard let username = user?.username else {return}
                guard let fullname = user?.name else {return}
                

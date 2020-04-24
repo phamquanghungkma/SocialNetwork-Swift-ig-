@@ -74,6 +74,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
 
+        
         return posts.count
 //        return 10
     }
@@ -216,6 +217,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                     return post1.creationDate > post2.creationDate
                 }
                 
+                print("number of data:",post.caption)
                 self.collectionView.reloadData()
                 }
         }

@@ -10,7 +10,7 @@ class User {
     //MARK:attributes
     var username: String!
     var name: String!
-    var profileImage: String!
+    var profileImageUrl: String!
     var uid: String!
     var isFollowed = false
     
@@ -25,7 +25,7 @@ class User {
                    self.name = name
         }
         if let profileImage  = dictionary["profileImageURL"] as? String {
-                   self.profileImage = profileImage
+                   self.profileImageUrl = profileImage
         }
        
         
