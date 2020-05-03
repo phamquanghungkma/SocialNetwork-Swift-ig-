@@ -11,12 +11,15 @@ import Firebase
 
 private let reuseIdentifier = "Cell"
 
-class FeedVC: UICollectionViewController,UICollectionViewDelegateFlowLayout {
-
-    
-    // MARK : - properties
+class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,FeedCellDelegate {
+ 
+  // MARK : - properties
     
     var posts = [Post]()
+    var viewSinglePost = false
+    var post:Post?
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,11 +30,19 @@ class FeedVC: UICollectionViewController,UICollectionViewDelegateFlowLayout {
         // Register cell classes
         self.collectionView!.register(FeedCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
+        
+        // configure refresh control
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
+        
         //configure loggout button
         configureNavigationBar()
         
         // call fetch api function
-        fetchPosts()
+        if !viewSinglePost{
+            fetchPosts()
+        }
     }
     
     // MARK:- UICollectionViewFlowLayout
@@ -56,30 +67,80 @@ class FeedVC: UICollectionViewController,UICollectionViewDelegateFlowLayout {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return posts.count
+        if viewSinglePost {
+            return 1
+        }else {
+            return posts.count
+        }
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! FeedCell
         
-        cell.post = posts[indexPath.row]
-    
+        
+        cell.delegate = self
+        
+        if viewSinglePost{
+            if let post = self.post{
+                cell.post = post
+            }
+        }else{
+            cell.post = posts[indexPath.item]
+        }
+        
         // Configure the cell
     
         return cell
     }
     
+    // MARK: FeedCellDelegate protocol
+    func handleUsernameTapped(for cell: FeedCell) {
+        
+        guard let post = cell.post else {return}
+        
+        let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
+        userProfileVC.user = post.user
+        
+        navigationController?.pushViewController(userProfileVC, animated: true)
+    }
+     
+     func handleOptionsTapped(for cell: FeedCell) {
+         print("handle options tapped")
+
+     }
+    
+     
+     func handleLikeTapped(for cell: FeedCell, isDoubleTap: Bool) {
+         print("handle like tapped")
+
+     }
+     
+     func handleCommentTapped(for cell: FeedCell) {
+         print("handle comment tapped")
+
+     }
+    
+    
     // MARK: handlers
     func configureNavigationBar(){
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Loggout", style: .plain, target: self, action: #selector(handleLoggout))
-        
+        if !viewSinglePost{
+                self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Loggout", style: .plain, target: self, action: #selector(handleLoggout))
+                
+        }
         
 //        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "send"), style:.plain, target: self, action:#selector(handleShowMessages))
         
           self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "send2"), style:.plain, target: self, action:#selector(handleShowMessages))
         
         self.navigationItem.title = "Feed"
+    }
+    
+    @objc func handleRefresh(){
+        posts.removeAll(keepingCapacity: false)
+        fetchPosts()
+        collectionView.reloadData()
+        
     }
     
     @objc func handleShowMessages(){
@@ -122,28 +183,46 @@ class FeedVC: UICollectionViewController,UICollectionViewDelegateFlowLayout {
         present(alertControler,animated:true,completion:nil)
     }
     //MARK: -API
+    func updateUserFeeds(){
+        
+        guard let currentUid = Auth.auth().currentUser?.uid else {return}
+        USER_FOLLOWING_REF.child(currentUid).observe(.childAdded) { (snapshot) in
+            let followingUserId = snapshot.key
+            USER_POSTS_REF.child(followingUserId).observe(.childAdded) { (snapshot) in
+                let postId = snapshot.key
+                USER_FEED_REF.child(currentUid).updateChildValues([postId:1])
+            }
+        }
+        USER_POSTS_REF.child(currentUid).observe(.childAdded) { (snapshot) in
+                let postId = snapshot.key
+            USER_FEED_REF.child(currentUid).updateChildValues([postId:1])
+        }
+        
+    }
     
     func fetchPosts(){
+        print("fecht posst function is called!")
         
-        POSTS_REF.observe(.childAdded) { (snapshot) in
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        USER_FEED_REF.child(currentUid).observe(.childAdded) { (snapshot) in
 
             let postId = snapshot.key
-            
-            guard let  dictionary = snapshot.value as? Dictionary<String,AnyObject> else {return}
-            
-            let post = Post(postId: postId, dictionary: dictionary)
-            
-            
-            self.posts.append(post)
-            
-            // sap xep list post
-            self.posts.sort { (post1, post2) -> Bool in
-                return post1.creationDate > post2.creationDate
+            Database.fetchPost(with: postId) { (post) in
+                
+                self.posts.append(post)
+                 // sap xep list post
+                 self.posts.sort { (post1, post2) -> Bool in
+                 return post1.creationDate > post2.creationDate
+                    
+                }
+                // stop refreshing
+                self.collectionView.refreshControl?.endRefreshing()
+                
+                
+                 //  print("Caption is:",post.caption)
+                self.collectionView.reloadData()
             }
-//            print("Caption is:",post.caption)
-            
-            self.collectionView.reloadData()
-            
         }
     }
     

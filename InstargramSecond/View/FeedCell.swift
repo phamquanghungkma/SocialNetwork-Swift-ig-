@@ -10,6 +10,8 @@ import UIKit
 import Firebase
 class FeedCell: UICollectionViewCell {
     
+    var delegate: FeedCellDelegate?
+    
     
     var post: Post? {
         
@@ -17,13 +19,17 @@ class FeedCell: UICollectionViewCell {
             guard let ownerUid = post?.ownerUid else {return}
             guard let imageUrl = post?.imageUrl else {return}
             guard let likes = post?.likes else {return}
+            guard let user = post?.user else {return}
 
             Database.fetchUser(with: ownerUid) { (user) in
-                
+
                 self.profileImageView.loadImage(with: user.profileImageUrl)
                 self.usernameButton.setTitle(user.username, for: .normal)
                 self.configureCaption(user: user)
             }
+//            self.profileImageView.loadImage(with: user.profileImageUrl)
+//                            self.usernameButton.setTitle(user.username, for: .normal)
+//                            self.configureCaption(user: user)
             postImageView.loadImage(with: imageUrl)
             likesLabel.text = "\(likes) likes"
             
@@ -41,20 +47,23 @@ class FeedCell: UICollectionViewCell {
            return iv;
        }()
     
-    let usernameButton: UIButton = {
+    lazy var usernameButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Username", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.addTarget(self, action: #selector(handleUsernameTapped), for: .touchUpInside)
         
         return button
     }()
     
-    let optionsButton: UIButton = {
+    lazy var optionsButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("•••", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.addTarget(self, action: #selector(handleOptionsTapped), for: .touchUpInside)
+
         return button
     }()
     
@@ -66,17 +75,19 @@ class FeedCell: UICollectionViewCell {
               return iv;
           }()
     
-    let likeButton: UIButton = {
+    lazy var likeButton: UIButton = {
          let button = UIButton(type: .system)
         button.setImage(UIImage(named: "like_unselected"), for: .normal)
         button.tintColor = .black
+        button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
          return button
      }()
     
-    let commentButton: UIButton = {
+    lazy var commentButton: UIButton = {
          let button = UIButton(type: .system)
         button.setImage(UIImage(named: "comment"), for: .normal)
         button.tintColor = .black
+        button.addTarget(self, action: #selector(handleCommentTapped), for: .touchUpInside)
          return button
      }()
     
@@ -153,6 +164,23 @@ class FeedCell: UICollectionViewCell {
         addSubview(postTimeLabel)
         postTimeLabel.anchor(top: captionLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil , paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
+    
+    // MARK: Handlers
+    @objc func handleUsernameTapped(){
+        
+        delegate?.handleUsernameTapped(for: self)
+    }
+    @objc func handleOptionsTapped(){
+        delegate?.handleOptionsTapped(for: self)
+    }
+    @objc func handleLikeTapped(){
+        delegate?.handleLikeTapped(for: self, isDoubleTap: true)
+        
+    }
+    @objc func handleCommentTapped(){
+        delegate?.handleCommentTapped(for: self)
+    }
+    
     
     
     func configureCaption(user: User?){

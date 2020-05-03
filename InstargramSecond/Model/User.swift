@@ -54,19 +54,24 @@ class User {
             let postId = snapshot.key
             USER_FEED_REF.child(currentUid).updateChildValues([postId: 1])
         }
+        
+        
     }
       func unfollow() {
          guard let currentUid = Auth.auth().currentUser?.uid else { return }
          
          // UPDATE: - get uid like this to work with update
          guard let uid = uid else { return }
-         
+         //set is followed to false
          self.isFollowed = false
 
+        //remove user from user - following structures
          USER_FOLLOWING_REF.child(currentUid).child(uid).removeValue()
          
+        // remove current user from user-follower structure
          USER_FOLLOWER_REF.child(uid).child(currentUid).removeValue()
          
+        //remove unfollowed users to posts from current user-feed
          USER_POSTS_REF.child(uid).observe(.childAdded) { (snapshot) in
              let postId = snapshot.key
              USER_FEED_REF.child(currentUid).child(postId).removeValue()

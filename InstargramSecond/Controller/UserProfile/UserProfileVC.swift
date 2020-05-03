@@ -90,12 +90,16 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         // set delegate
         header.delegate = self // self ở đây là
 
+//        if let user = self.user {
+//            header.user = user
+//        } else if let userToLoadFromSearchVC = self.user {
+//            header.user = userToLoadFromSearchVC
+//            self.navigationItem.title = userToLoadFromSearchVC.username
+//
+//        }
         if let user = self.user {
             header.user = user
-        } else if let userToLoadFromSearchVC = self.user {
-            header.user = userToLoadFromSearchVC
-            self.navigationItem.title = userToLoadFromSearchVC.username
-
+            self.navigationItem.title = user.username
         }
         // Return header
         
@@ -103,6 +107,11 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
        }
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
                 
+        let feedVC = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+        feedVC.viewSinglePost = true
+        feedVC.post = posts[indexPath.item]
+        
+        navigationController?.pushViewController(feedVC, animated: true)
     }
     
 
@@ -207,19 +216,14 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         USER_POSTS_REF.child(uid).observe(.childAdded) { (snapshot) in
                 
             let postId = snapshot.key
-            POSTS_REF.child(postId).observeSingleEvent(of: .value) { (DataSnapshot) in
-            
-                guard let dictionary = DataSnapshot.value as? Dictionary<String,AnyObject> else {return}
-                let post = Post(postId: postId, dictionary: dictionary)
+            Database.fetchPost(with: postId) { (post) in
                 self.posts.append(post)
-                
+                // sap xep list post
                 self.posts.sort { (post1, post2) -> Bool in
-                    return post1.creationDate > post2.creationDate
-                }
-                
-                print("number of data:",post.caption)
+                return post1.creationDate > post2.creationDate}
+  //            print("Caption is:",post.caption)
                 self.collectionView.reloadData()
-                }
+            }
         }
         
     }
