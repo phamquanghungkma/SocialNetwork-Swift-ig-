@@ -12,6 +12,9 @@ import Firebase
 private let reuseIdentifier = "Cell"
 
 class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,FeedCellDelegate {
+   
+    
+ 
  
   // MARK : - properties
     
@@ -94,6 +97,19 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
     }
     
     // MARK: FeedCellDelegate protocol
+    
+    func handleShowLikes(for cell: FeedCell) {
+        
+        guard let post = cell.post else { return }
+        guard let postId = post.postId else { return }
+        
+        let followLikeVC = FollowLikeVC()
+        
+        followLikeVC.viewingMode = FollowLikeVC.ViewingMode(index: 2)
+        followLikeVC.postId = postId
+        navigationController?.pushViewController(followLikeVC, animated: true)
+        
+    }
     func handleUsernameTapped(for cell: FeedCell) {
         
         guard let post = cell.post else {return}
@@ -111,17 +127,54 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
     
      
      func handleLikeTapped(for cell: FeedCell, isDoubleTap: Bool) {
-         print("handle like tapped")
+        guard let post = cell.post else {return}
+        
+        if post.didLike {
+            
+            post.adjustLike(addLike: false,completion: {
+                (likes) in
+                cell.likesLabel.text = "\(likes) likes"
+                print("Number like iss : \(likes)")
 
-     }
+                cell.likeButton.setImage(UIImage(named: "like_unselected"), for: .normal)
+            })
+        } else {
+            post.adjustLike(addLike: true, completion: {
+                (likes) in
+              
+                cell.likesLabel.text = "\(likes) likes"
+                print("Number like iss : \(likes)")
+
+                cell.likeButton.setImage(UIImage(named: "like_selected"), for: .normal)
+            }) }}
      
      func handleCommentTapped(for cell: FeedCell) {
          print("handle comment tapped")
 
      }
     
+    func handleConfigureLikeButton(for cell: FeedCell) {
+        
+        guard let post = cell.post else {return}
+        guard let postId = post.postId else {return}
+        guard let currentUid = Auth.auth().currentUser?.uid else {return}
+        USER_LIKES_REF.child(currentUid).observeSingleEvent(of: .value) { (snapshot) in
+            if snapshot.hasChild(postId)
+            {
+                post.didLike = true
+                cell.likeButton.setImage(UIImage(named: "like_selected"), for: .normal)
+            }
+          
+        }
+        
+        
+     }
+     
+    
     
     // MARK: handlers
+ 
+    
     func configureNavigationBar(){
         
         if !viewSinglePost{
@@ -169,14 +222,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
                 print("Successfully log out")
                 
             } catch{
-                
                 // handler error
-                print("Failed to sign out ")
-            }
-            
-        }
-            
-        ))
+                print("Failed to sign out ") }
+        }))
         
         // add cancel action
         alertControler.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))

@@ -34,7 +34,7 @@ class FeedCell: UICollectionViewCell {
             likesLabel.text = "\(likes) likes"
             
             
-            
+            configureLikeButton()
             
         }
     }
@@ -104,10 +104,16 @@ class FeedCell: UICollectionViewCell {
           button.tintColor = .black
            return button
        }()
-    let likesLabel: UILabel = {
+    lazy var likesLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 12)
         label.text = "3 likes"
+        
+        // add gesture regcognize to label
+        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleShowLikes))
+        likeTap.numberOfTouchesRequired = 1
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(likeTap)
         return label
         
     }()
@@ -179,6 +185,13 @@ class FeedCell: UICollectionViewCell {
     }
     @objc func handleCommentTapped(){
         delegate?.handleCommentTapped(for: self)
+    }
+    @objc func handleShowLikes(){
+        delegate?.handleShowLikes(for: self)
+    }
+    
+    func configureLikeButton(){
+        delegate?.handleConfigureLikeButton(for: self)
     }
     
     
