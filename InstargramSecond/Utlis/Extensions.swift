@@ -52,13 +52,16 @@ extension UIView{
 
 
 extension Database {
-    
+    // extenstion cho Database cua Firebase
+    // nhận vào uid, và thực thi completion
     static func fetchUser(with uid:String , completion: @escaping(User)->()){
+        
         USER_REF.child(uid).observeSingleEvent(of: .value){
             (snapshot) in
             guard let dictionary = snapshot.value as? Dictionary<String,AnyObject> else {return}
             
             let user = User(uid: uid, dictionary: dictionary)
+            // truyen user vao completion block
             completion(user)
         }
         
@@ -74,6 +77,7 @@ extension Database {
             Database.fetchUser(with: ownerUid) { (user) in
                 
                 let post = Post(postId: postId, user: user, dictionary: dictionary)
+                
                 completion(post)
                 
                 

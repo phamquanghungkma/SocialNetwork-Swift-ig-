@@ -11,8 +11,8 @@ protocol FeedCellDelegate {
     func handleOptionsTapped(for cell: FeedCell)
     func handleLikeTapped(for cell: FeedCell, isDoubleTap: Bool)
     func handleCommentTapped(for cell: FeedCell)
-//    func handleConfigureLikeButton(for cell: FeedCell)
-//    func handleShowLikes(for cell: FeedCell)
+    func handleConfigureLikeButton(for cell: FeedCell)
+    func handleShowLikes(for cell: FeedCell)
 //    func configureCommentIndicatorView(for cell: FeedCell)
 }
 
@@ -39,7 +39,7 @@ protocol UserProfileHeaderDelegate {
 //}
 //
 protocol FollowCellDelegate {
-    func handleFollowTapped(for cell: FollowCell)
+    func handleFollowTapped(for cell: FollowLikeCell)
 }
 //
 //protocol ChatCellDelegate {

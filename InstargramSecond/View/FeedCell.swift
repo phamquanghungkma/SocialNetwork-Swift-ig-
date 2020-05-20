@@ -34,7 +34,7 @@ class FeedCell: UICollectionViewCell {
             likesLabel.text = "\(likes) likes"
             
             
-            
+            configureLikeButton()
             
         }
     }
@@ -67,11 +67,17 @@ class FeedCell: UICollectionViewCell {
         return button
     }()
     
-    let postImageView: CustomImageView = {
+    lazy var postImageView: CustomImageView = {
               let iv = CustomImageView()
               iv.contentMode = .scaleAspectFill
               iv.clipsToBounds = true
               iv.backgroundColor = .lightGray
+        
+        // add gesture recognizer for double tap to like
+              let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTapToLike))
+                likeTap.numberOfTapsRequired = 2
+            iv.isUserInteractionEnabled = true
+            iv.addGestureRecognizer(likeTap)
               return iv;
           }()
     
@@ -104,10 +110,16 @@ class FeedCell: UICollectionViewCell {
           button.tintColor = .black
            return button
        }()
-    let likesLabel: UILabel = {
+    lazy var likesLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 12)
         label.text = "3 likes"
+        
+        // add gesture regcognize to label
+        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleShowLikes))
+        likeTap.numberOfTouchesRequired = 1
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(likeTap)
         return label
         
     }()
@@ -174,11 +186,24 @@ class FeedCell: UICollectionViewCell {
         delegate?.handleOptionsTapped(for: self)
     }
     @objc func handleLikeTapped(){
-        delegate?.handleLikeTapped(for: self, isDoubleTap: true)
+        delegate?.handleLikeTapped(for: self, isDoubleTap: false)
         
     }
     @objc func handleCommentTapped(){
         delegate?.handleCommentTapped(for: self)
+    }
+    @objc func handleShowLikes(){
+        delegate?.handleShowLikes(for: self)
+        // FeedCellDelegate.handlerShowLikes()
+    }
+    
+    @objc func handleDoubleTapToLike(){
+        delegate?.handleLikeTapped(for: self, isDoubleTap: true)
+    }
+    
+    
+    func configureLikeButton(){
+        delegate?.handleConfigureLikeButton(for: self)
     }
     
     
@@ -208,7 +233,6 @@ class FeedCell: UICollectionViewCell {
         
         addSubview(savePostButton)
         savePostButton.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 20, height: 24)
-        
         
     }
     
