@@ -30,8 +30,7 @@ class FollowLikeVC : UITableViewController, FollowCellDelegate{
         }
         
     }
-    
-    
+
     var postId: String?
     var viewingMode: ViewingMode!
     var uid: String?
@@ -44,14 +43,12 @@ class FollowLikeVC : UITableViewController, FollowCellDelegate{
         tableView.register(FollowLikeCell.self, forCellReuseIdentifier: reuseIdentifer)
         
         // config nav controller and fetch user
-        if let viewingMode = self.viewingMode {
+   
             // set tittle
-            configureNavigationTitle(with: viewingMode)
+            configureNavigationTitle()
             // fetch users
-            fetchUsers(by: self.viewingMode)
-
-            
-        }
+            fetchUsers()
+  
         
         // clear seperator lines
         tableView.separatorColor = .clear
@@ -115,7 +112,8 @@ class FollowLikeVC : UITableViewController, FollowCellDelegate{
     }
     
     // MARK: - Handlers
-    func configureNavigationTitle(with viewingMode: ViewingMode){
+    func configureNavigationTitle(){
+        guard let viewingMode = self.viewingMode else {return}
         switch viewingMode {
         case .Followers: navigationItem.title = "Followers"
         case .Following: navigationItem.title = "Following"
@@ -126,22 +124,33 @@ class FollowLikeVC : UITableViewController, FollowCellDelegate{
     
     // MARK: API
     func getDatabaseReference()-> DatabaseReference?{
+        
         guard let viewingMode = self.viewingMode else { return nil }
         
         switch viewingMode {
-        case .Followers:
-            return USER_FOLLOWER_REF
-        case .Following:
-            return USER_FOLLOWING_REF
-        case .Likes:
-            return POST_LIKES_REF
+            case .Followers:
+                return USER_FOLLOWER_REF
+            case .Following:
+                return USER_FOLLOWING_REF
+            case .Likes:
+                return POST_LIKES_REF
         }
         
     }
+    func fetchUser(with uid:String ){
+        // lay user ve
+        Database.fetchUser(with: uid, completion:{(user) in
+                self.users.append(user)
+                self.tableView.reloadData()
+                                })
+        
+    }
     
-    func fetchUsers(by viewingMode: ViewingMode){
+    func fetchUsers(){
         // tham số ViewingMode để truyền vào getDatabaseReference
         guard let ref = getDatabaseReference() else { return }
+        guard let viewingMode = self.viewingMode else {return}
+        
         
         switch viewingMode {
             
@@ -154,25 +163,22 @@ class FollowLikeVC : UITableViewController, FollowCellDelegate{
                       
                       allObject.forEach({ (snapshot) in
                           
-                          let userId = snapshot.key
-                          Database.fetchUser(with: userId, completion:{(user) in
-                              self.users.append(user)
-                              self.tableView.reloadData()
-                              
-                          })
+                          let uid = snapshot.key
+                            
+                        self.fetchUser(with: uid)
+                        
                           
                       })
                   }
             case .Likes:
                 guard let postId = self.postId else { return  }
 //                guard let uid = self.uid else {return}
-
-                print("id post is :", postId)
-                print("duong dan la \(ref)")
                 ref.child(postId).observe(.childAdded) { (snapshot) in
                     // lay dc id cua user tuc la uid
                     let uid = snapshot.key
+                    // lau uid để fetch User về
                     Database.fetchUser(with: uid) { (user) in
+                        // sau khi thuc hien xong ham thi se thuc hien khoi completion block
                         self.users.append(user)
                         
                         self.tableView.reloadData()
@@ -180,10 +186,7 @@ class FollowLikeVC : UITableViewController, FollowCellDelegate{
             }
         
         }
-        
-        
-      
-      
+
     }
  
 }

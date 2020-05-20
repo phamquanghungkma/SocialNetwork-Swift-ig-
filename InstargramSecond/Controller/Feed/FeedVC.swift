@@ -13,13 +13,10 @@ private let reuseIdentifier = "Cell"
 
 class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,FeedCellDelegate {
    
-    
- 
- 
   // MARK : - properties
     
     var posts = [Post]()
-    var viewSinglePost = false
+    var viewSinglePost = false // viewSinglePost mô tả xem có phải chi tiết bài viết hay
     var post:Post?
     
     
@@ -51,7 +48,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
     // MARK:- UICollectionViewFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
+        // kich thuoc cho 1 item trong collectionView
         let width = view.frame.width
         var height  = width + 8 + 40 + 8
         height += 50
@@ -125,20 +122,21 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
 
      }
     
-     
+     // xy ly chuc nang
      func handleLikeTapped(for cell: FeedCell, isDoubleTap: Bool) {
         guard let post = cell.post else {return}
         
-        if post.didLike {
-            
-            post.adjustLike(addLike: false,completion: {
-                (likes) in
-                cell.likesLabel.text = "\(likes) likes"
-                print("Number like iss : \(likes)")
-
-                cell.likeButton.setImage(UIImage(named: "like_unselected"), for: .normal)
-            })
+        if post.didLike {// check neu ma dang true thi xu ly unlike
+            // handle unlike post
+            if !isDoubleTap {
+                post.adjustLike(addLike: false,completion: {(likes) in
+                    cell.likesLabel.text = "\(likes) likes"
+                    print("Number like iss : \(likes)")
+                    cell.likeButton.setImage(UIImage(named: "like_unselected"), for: .normal)
+                         })
+            }
         } else {
+            // handle like post
             post.adjustLike(addLike: true, completion: {
                 (likes) in
               
@@ -159,18 +157,16 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
         guard let postId = post.postId else {return}
         guard let currentUid = Auth.auth().currentUser?.uid else {return}
         USER_LIKES_REF.child(currentUid).observeSingleEvent(of: .value) { (snapshot) in
+            
+            //check if post id exists in user-like structure
             if snapshot.hasChild(postId)
             {
                 post.didLike = true
                 cell.likeButton.setImage(UIImage(named: "like_selected"), for: .normal)
             }
-          
         }
         
-        
      }
-     
-    
     
     // MARK: handlers
  

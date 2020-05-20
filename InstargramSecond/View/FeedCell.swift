@@ -67,11 +67,17 @@ class FeedCell: UICollectionViewCell {
         return button
     }()
     
-    let postImageView: CustomImageView = {
+    lazy var postImageView: CustomImageView = {
               let iv = CustomImageView()
               iv.contentMode = .scaleAspectFill
               iv.clipsToBounds = true
               iv.backgroundColor = .lightGray
+        
+        // add gesture recognizer for double tap to like
+              let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTapToLike))
+                likeTap.numberOfTapsRequired = 2
+            iv.isUserInteractionEnabled = true
+            iv.addGestureRecognizer(likeTap)
               return iv;
           }()
     
@@ -180,7 +186,7 @@ class FeedCell: UICollectionViewCell {
         delegate?.handleOptionsTapped(for: self)
     }
     @objc func handleLikeTapped(){
-        delegate?.handleLikeTapped(for: self, isDoubleTap: true)
+        delegate?.handleLikeTapped(for: self, isDoubleTap: false)
         
     }
     @objc func handleCommentTapped(){
@@ -188,7 +194,13 @@ class FeedCell: UICollectionViewCell {
     }
     @objc func handleShowLikes(){
         delegate?.handleShowLikes(for: self)
+        // FeedCellDelegate.handlerShowLikes()
     }
+    
+    @objc func handleDoubleTapToLike(){
+        delegate?.handleLikeTapped(for: self, isDoubleTap: true)
+    }
+    
     
     func configureLikeButton(){
         delegate?.handleConfigureLikeButton(for: self)
@@ -221,7 +233,6 @@ class FeedCell: UICollectionViewCell {
         
         addSubview(savePostButton)
         savePostButton.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 20, height: 24)
-        
         
     }
     
