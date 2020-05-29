@@ -144,7 +144,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
                 print("Number like iss : \(likes)")
 
                 cell.likeButton.setImage(UIImage(named: "like_selected"), for: .normal)
-            }) }}
+            })
+            
+        }}
      
      func handleCommentTapped(for cell: FeedCell) {
          print("handle comment tapped")
@@ -163,6 +165,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
             {
                 post.didLike = true
                 cell.likeButton.setImage(UIImage(named: "like_selected"), for: .normal)
+            }
+            else {
+                cell.likeButton.setImage(UIImage(named: "like_unselected"), for: .normal)
             }
         }
         

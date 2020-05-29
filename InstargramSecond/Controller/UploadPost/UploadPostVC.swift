@@ -142,6 +142,8 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
                 
                     //return to home feed
                 self.dismiss(animated: true) {
+                    print("calll")
+
                     self.tabBarController?.selectedIndex = 0
                 }
             }
