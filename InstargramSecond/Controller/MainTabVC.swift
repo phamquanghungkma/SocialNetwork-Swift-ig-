@@ -20,7 +20,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate{
         //configure view controllers
         configureViewControllers()
         
-        //user validation
+        //user validation check xem đã đăng nhập hay chưa
         checkIfUserIsLoggedIn()
         
         
@@ -50,10 +50,12 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate{
         //tab bar tinit color
         tabBar.tintColor = .black
     }
+    
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         let index = viewControllers?.index(of: viewController)// thu tu tab i 
         print("Index : \(index!)")
-        
+    
+        // nếu select vào tab có index == 2 thì sẽ show ra cái modal
         if index == 2 {
             let selectImageVC = SelectImageVC(collectionViewLayout: UICollectionViewFlowLayout())
 //            selectImageVC.modalPresentationStyle = .popover
@@ -80,6 +82,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate{
         // everytime we call this fucntion, it's going to return a navigation controller with whatever we set 
     }
     
+    // check xem da đăng nhập hay chưa
     func checkIfUserIsLoggedIn(){
         if Auth.auth().currentUser == nil {
             DispatchQueue.main.async {
@@ -89,7 +92,6 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate{
                 navController.navigationBar.tintColor = .black
                 self.present(navController,animated:true,completion: nil)
             }
-            
                     return
             
         }

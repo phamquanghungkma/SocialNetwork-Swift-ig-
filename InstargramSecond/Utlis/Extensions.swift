@@ -61,7 +61,7 @@ extension Database {
             guard let dictionary = snapshot.value as? Dictionary<String,AnyObject> else {return}
             
             let user = User(uid: uid, dictionary: dictionary)
-            // truyen user vao completion block
+            // truyen user vao completion block, thực hiện completion này
             completion(user)
         }
         

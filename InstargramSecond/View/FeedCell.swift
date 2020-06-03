@@ -21,12 +21,14 @@ class FeedCell: UICollectionViewCell {
             guard let likes = post?.likes else {return}
             guard let user = post?.user else {return}
 
+            
+            // fetch user về, completion chính là đoạn code bên dưới
             Database.fetchUser(with: ownerUid) { (user) in
-
                 self.profileImageView.loadImage(with: user.profileImageUrl)
                 self.usernameButton.setTitle(user.username, for: .normal)
                 self.configureCaption(user: user)
             }
+            
 //            self.profileImageView.loadImage(with: user.profileImageUrl)
 //                            self.usernameButton.setTitle(user.username, for: .normal)
 //                            self.configureCaption(user: user)

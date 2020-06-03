@@ -77,7 +77,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! FeedCell
         
-        
+    
         cell.delegate = self
         
         if viewSinglePost{
@@ -128,7 +128,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
         
         if post.didLike {// check neu ma dang true thi xu ly unlike
             // handle unlike post
-            if !isDoubleTap {
+            if !isDoubleTap { 
                 post.adjustLike(addLike: false,completion: {(likes) in
                     cell.likesLabel.text = "\(likes) likes"
                     print("Number like iss : \(likes)")
@@ -152,7 +152,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
          print("handle comment tapped")
 
      }
-    
+    // xử lý like như, khi load post, check xem đc like hay chưa, số lượng like
     func handleConfigureLikeButton(for cell: FeedCell) {
         
         guard let post = cell.post else {return}
