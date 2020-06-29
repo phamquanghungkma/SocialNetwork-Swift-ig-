@@ -149,8 +149,11 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
         }}
      
      func handleCommentTapped(for cell: FeedCell) {
-         print("handle comment tapped")
-
+        guard let postId = cell.post?.postId else { return } // lay id cua post
+        let commentVC = CommentVC(collectionViewLayout: UICollectionViewFlowLayout())
+        commentVC.postId = postId // gui postId sang
+        navigationController?.pushViewController(commentVC, animated: true)
+        
      }
     // xử lý like như, khi load post, check xem đc like hay chưa, số lượng like
     func handleConfigureLikeButton(for cell: FeedCell) {
@@ -187,7 +190,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
         
           self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "send2"), style:.plain, target: self, action:#selector(handleShowMessages))
         
-        self.navigationItem.title = "Feed"
+        self.navigationItem.title = TITLE_NAV_FEED
     }
     
     @objc func handleRefresh(){

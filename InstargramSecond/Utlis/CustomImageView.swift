@@ -13,6 +13,7 @@ var imageCache = [String: UIImage]() // initalize an empty dictionary
 class CustomImageView: UIImageView{
     
     var lastImgUrlUsedToLoadImage: String?
+    
     func loadImage(with urlString: String){
         
         //set email to nil

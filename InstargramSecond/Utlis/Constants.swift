@@ -2,8 +2,8 @@
 //  Constants.swift
 //  InstagramCopy
 //
-//  Created by Stephan Dowless on 2/7/18.
-//  Copyright © 2018 Stephan Dowless. All rights reserved.
+//  Created by TofuKMA .
+//   All rights reserved.
 //
 
 import Firebase
@@ -52,4 +52,11 @@ let COMMENT_INT_VALUE = 1
 let FOLLOW_INT_VALUE = 2
 let COMMENT_MENTION_INT_VALUE = 3
 let POST_MENTION_INT_VALUE = 4
+
+
+
+
+let TITLE_NAV_COMMENT = "Comments"
+let TITLE_NAV_FEED = "Feed"
+
 
