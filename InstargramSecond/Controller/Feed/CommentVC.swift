@@ -80,6 +80,8 @@ class CommentVC:UICollectionViewController,UICollectionViewDelegateFlowLayout{
         // register cell class
         collectionView.register(CommentCell.self, forCellWithReuseIdentifier: reuseIdentifer)
         
+        //
+        print("View did load called !")
         // fetch comments
         fetchComments()
     }
@@ -107,7 +109,19 @@ class CommentVC:UICollectionViewController,UICollectionViewDelegateFlowLayout{
     
     // MARK: UICollectionView
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 60)
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+        let dumyCell = CommentCell(frame: frame)
+        dumyCell.comment = comments[indexPath.item]
+        dumyCell.layoutIfNeeded()
+        
+        let targetSize = CGSize(width: view.frame.width, height: 1000)
+        let estimatedSize = dumyCell.systemLayoutSizeFitting(targetSize)
+        
+        let height = max(40 + 8 + 8, estimatedSize.height) // return the greater of two values
+        
+        
+        return CGSize(width: view.frame.width, height: height)
+
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -116,8 +130,10 @@ class CommentVC:UICollectionViewController,UICollectionViewDelegateFlowLayout{
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifer, for: indexPath) as! CommentCell
+        cell.comment = comments[indexPath.item]
+        cell.backgroundColor = .blue
         return cell
-        
+         
     }
     
     // MARK: Handler
@@ -132,7 +148,9 @@ class CommentVC:UICollectionViewController,UICollectionViewDelegateFlowLayout{
                       "creationDate":creationDate,
                     "uid":uid] as [String:Any]
          
-        COMMENT_REF.child("postId : \(postId)").childByAutoId().updateChildValues(values)
+        COMMENT_REF.child("postId : \(postId)").childByAutoId().updateChildValues(values) { (err,ref) in
+            self.commentTextField.text  = nil
+        }
         
     }
     
@@ -150,7 +168,7 @@ class CommentVC:UICollectionViewController,UICollectionViewDelegateFlowLayout{
                 let comment = Comment(user: user, dictionary: dictionary)
         
                 self.comments.append(comment)
-                print("\(comment.user.username!) have this comment !")
+                print("There are \(self.comments.count) comment ")
                 self.collectionView.reloadData()
             }
          
