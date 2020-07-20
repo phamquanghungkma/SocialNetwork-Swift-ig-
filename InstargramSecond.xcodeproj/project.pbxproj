@@ -163,7 +163,7 @@
 		18A189D123E737FC001237C1 /* InstargramSecond */ = {
 			isa = PBXGroup;
 			children = (
-				18A189EB23E73F0C001237C1 /* Utlis */,
+				18A189EB23E73F0C001237C1 /* Utils */,
 				18A189E623E73978001237C1 /* Controller */,
 				18A189E523E73973001237C1 /* View */,
 				18A189E423E73968001237C1 /* Model */,
@@ -215,7 +215,7 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		18A189EB23E73F0C001237C1 /* Utlis */ = {
+		18A189EB23E73F0C001237C1 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				18470E3B24320045008E05EF /* Constants.swift */,
@@ -223,7 +223,7 @@
 				18D1D65524323B84001DF3A2 /* Protocols.swift */,
 				18287EDE244C80060038B597 /* CustomImageView.swift */,
 			);
-			path = Utlis;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		51959469074E06F893D0DCD6 /* Frameworks */ = {
