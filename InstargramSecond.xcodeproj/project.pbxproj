@@ -32,6 +32,7 @@
 		18B96AF123F3030C002C4A04 /* UploadPostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B96AF023F3030C002C4A04 /* UploadPostVC.swift */; };
 		18B96AF323F30361002C4A04 /* NotificationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B96AF223F30361002C4A04 /* NotificationsVC.swift */; };
 		18B96AF523F30385002C4A04 /* UserProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B96AF423F30385002C4A04 /* UserProfileVC.swift */; };
+		18BD797824C587C700286FC9 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BD797724C587C700286FC9 /* NotificationCell.swift */; };
 		18D082C52445BD4800B6CE2D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D082C42445BD4800B6CE2D /* Post.swift */; };
 		18D1D65624323B84001DF3A2 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D1D65524323B84001DF3A2 /* Protocols.swift */; };
 		18D37A6223EC05BC00D3DBFC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18D37A6123EC05BC00D3DBFC /* GoogleService-Info.plist */; };
@@ -68,6 +69,7 @@
 		18B96AF023F3030C002C4A04 /* UploadPostVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostVC.swift; sourceTree = "<group>"; };
 		18B96AF223F30361002C4A04 /* NotificationsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsVC.swift; sourceTree = "<group>"; };
 		18B96AF423F30385002C4A04 /* UserProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileVC.swift; sourceTree = "<group>"; };
+		18BD797724C587C700286FC9 /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
 		18D082C42445BD4800B6CE2D /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		18D1D65524323B84001DF3A2 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		18D37A6123EC05BC00D3DBFC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 				18D4D62B2446F3280068B499 /* UserPostCell.swift */,
 				187A0885244DEF4F00F5DA65 /* FeedCell.swift */,
 				181F92B92497602800FB3D40 /* CommentCell.swift */,
+				18BD797724C587C700286FC9 /* NotificationCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -360,6 +363,7 @@
 				18D082C52445BD4800B6CE2D /* Post.swift in Sources */,
 				1826B8EE23EB19ED00F4087B /* SignUpVC.swift in Sources */,
 				18532EB32439E9510018E972 /* FollowLikeCell.swift in Sources */,
+				18BD797824C587C700286FC9 /* NotificationCell.swift in Sources */,
 				186C4A1A2425A39D0018D2C2 /* User.swift in Sources */,
 				18B96AEB23F2F660002C4A04 /* MainTabVC.swift in Sources */,
 				18A189D323E737FC001237C1 /* AppDelegate.swift in Sources */,
