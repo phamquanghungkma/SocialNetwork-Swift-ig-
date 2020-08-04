@@ -16,7 +16,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
   // MARK : - properties
     
     var posts = [Post]()
-    var viewSinglePost = false // viewSinglePost mô tả xem có phải chi tiết bài viết hay
+    var viewSinglePost = false // viewSinglePost mô tả xem có phải chi tiết bài viết hay k
     var post:Post?
     
     
@@ -217,14 +217,11 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
                 // atemp to sign out
                 
                 try Auth.auth().signOut()
-                
                 // present login controller
                 let loginVC  = LoginVC()
                 let navController = UINavigationController(rootViewController: loginVC)
                 self.present(navController,animated:true,completion: nil)
-                
                 print("Successfully log out")
-                
             } catch{
                 // handler error
                 print("Failed to sign out ") }
@@ -235,22 +232,22 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
         present(alertControler,animated:true,completion:nil)
     }
     //MARK: -API
-    func updateUserFeeds(){
-        
-        guard let currentUid = Auth.auth().currentUser?.uid else {return}
-        USER_FOLLOWING_REF.child(currentUid).observe(.childAdded) { (snapshot) in
-            let followingUserId = snapshot.key
-            USER_POSTS_REF.child(followingUserId).observe(.childAdded) { (snapshot) in
-                let postId = snapshot.key
-                USER_FEED_REF.child(currentUid).updateChildValues([postId:1])
-            }
-        }
-        USER_POSTS_REF.child(currentUid).observe(.childAdded) { (snapshot) in
-                let postId = snapshot.key
-            USER_FEED_REF.child(currentUid).updateChildValues([postId:1])
-        }
-        
-    }
+//    func updateUserFeeds(){
+//
+//        guard let currentUid = Auth.auth().currentUser?.uid else {return}
+//        USER_FOLLOWING_REF.child(currentUid).observe(.childAdded) { (snapshot) in
+//            let followingUserId = snapshot.key
+//            USER_POSTS_REF.child(followingUserId).observe(.childAdded) { (snapshot) in
+//                let postId = snapshot.key
+//                USER_FEED_REF.child(currentUid).updateChildValues([postId:1])
+//            }
+//        }
+//        USER_POSTS_REF.child(currentUid).observe(.childAdded) { (snapshot) in
+//                let postId = snapshot.key
+//            USER_FEED_REF.child(currentUid).updateChildValues([postId:1])
+//        }
+//
+//    }
     
     func fetchPosts(){
         print("fecht posst function is called!")
@@ -277,5 +274,8 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
             }
         }
     }
+    
+
+    
     
 }
