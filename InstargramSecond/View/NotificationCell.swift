@@ -19,15 +19,33 @@ class NotificationCell: UITableViewCell {
         return iv
     }()
     
+    var notification: Notification? {
+        didSet{
+            guard let user = notification?.user else { return }
+            guard let profileImageUrl = user.profileImageUrl else { return }
+            profileImageView.loadImage(with: profileImageUrl)
+            
+            // config notification message
+            configureNotificationLabel()
+            
+            configurNotificationType()
+            guard let post = notification?.post else { return }
+            print("post is : \(post)" )
+
+            guard let postImageUrl = notification?.post?.imageUrl else { return }
+//            if let post = notification?.post {
+//                postImageView.loadImage(with: post.imageUrl)
+//                print("imageURL : \(post.imageUrl)")
+//            }
+            print("image is : \(postImageUrl)" )
+            postImageView.loadImage(with: postImageUrl)
+            
+        }
+    }
+    
+    
     let notificationLabel: UILabel = {
        let label = UILabel()
-        
-        let attributedText = NSMutableAttributedString(string:"Bin Ladel ",attributes:[NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12)])
-        
-        attributedText.append(NSAttributedString(string:"Comments on your post ",attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12)]))
-        
-         attributedText.append(NSAttributedString(string:"2d",attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12), NSAttributedString.Key.foregroundColor:UIColor.lightGray]))
-        label.attributedText = attributedText
         label.numberOfLines = 2
         return label
     }()
@@ -54,6 +72,50 @@ class NotificationCell: UITableViewCell {
         print("Handle follow tapped")
     }
     
+    func configurNotificationType(){
+        guard let notification = self.notification else { return }
+        guard let user = notification.user else { return }
+        
+        var anchor : NSLayoutXAxisAnchor!
+        
+        if notification.notificationType != .Follow {
+            // notification type is comment or like
+            // neu thong bao ve != follow thi sẽ hiển thị ảnh
+            addSubview(postImageView)
+                     postImageView.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 40, height: 40)
+                     postImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+            anchor = postImageView.leftAnchor
+        } else {
+            // còn k thì sẽ tạo ra button
+            // notification type is follow
+            addSubview(followButton)
+            followButton.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 12, width: 90, height: 30)
+            followButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+            followButton.layer.cornerRadius = 3
+            anchor = followButton.leftAnchor
+        }
+        addSubview(notificationLabel)
+        notificationLabel.anchor(top: nil, left:  profileImageView.rightAnchor, bottom: nil, right: anchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
+            notificationLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        
+    }
+    
+    func configureNotificationLabel(){
+        
+        guard let notification = self.notification else { return }
+        guard let user = notification.user else { return }
+         let notificationMessage = notification.notificationType.description
+        guard let username = user.username else { return }
+        
+        let attributedText = NSMutableAttributedString(string:username ,attributes:[NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12)])
+               
+            attributedText.append(NSAttributedString(string: notificationMessage ,attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12)]))
+            attributedText.append(NSAttributedString(string:"2d",attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12), NSAttributedString.Key.foregroundColor:UIColor.lightGray]))
+        notificationLabel.attributedText = attributedText
+         
+    }
+    
+    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style:style,reuseIdentifier: reuseIdentifier)
@@ -62,24 +124,7 @@ class NotificationCell: UITableViewCell {
         profileImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop:0 , paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
         profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         profileImageView.layer.cornerRadius = 40/2
-        
-        
-        addSubview(followButton)
-        followButton.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 12, width: 90, height: 30)
-        followButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        followButton.layer.cornerRadius = 3
-        followButton.isHidden = true
-        
-        addSubview(postImageView)
-            postImageView.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 40, height: 40)
-            postImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        
-        
-        addSubview(notificationLabel)
-        notificationLabel.anchor(top: nil, left: profileImageView.rightAnchor, bottom: nil, right: postImageView.leftAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
-        notificationLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        
-    
+
     }
     
     required init?(coder: NSCoder) {

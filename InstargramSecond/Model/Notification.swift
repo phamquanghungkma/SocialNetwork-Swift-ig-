@@ -63,7 +63,7 @@ class Notification {
             self.creationDate = Date(timeIntervalSince1970: creationDate)
         }
         
-        if let type = dictionary["type"] as? Int { // type in firebase is 0 1 2 3 => type is index of Notification  
+        if let type = dictionary["type"] as? Int { // type in firebase is 0 1 2 3 => type is index of Notification
             self.notificationType = NotificationType(index: type)
         }
         
