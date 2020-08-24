@@ -22,6 +22,7 @@
 		186C4A1A2425A39D0018D2C2 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186C4A192425A39D0018D2C2 /* User.swift */; };
 		187A0886244DEF4F00F5DA65 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187A0885244DEF4F00F5DA65 /* FeedCell.swift */; };
 		188DEC86249B1AEB00250310 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188DEC85249B1AEB00250310 /* Comment.swift */; };
+		189F293224E153F60037C79D /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189F293124E153F60037C79D /* Notification.swift */; };
 		18A189D323E737FC001237C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A189D223E737FC001237C1 /* AppDelegate.swift */; };
 		18A189DA23E737FE001237C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18A189D923E737FE001237C1 /* Assets.xcassets */; };
 		18A189DD23E737FE001237C1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18A189DB23E737FE001237C1 /* LaunchScreen.storyboard */; };
@@ -57,6 +58,7 @@
 		186C4A192425A39D0018D2C2 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		187A0885244DEF4F00F5DA65 /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		188DEC85249B1AEB00250310 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		189F293124E153F60037C79D /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		18A189CF23E737FC001237C1 /* InstargramSecond.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstargramSecond.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18A189D223E737FC001237C1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		18A189D923E737FE001237C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 				186C4A192425A39D0018D2C2 /* User.swift */,
 				18D082C42445BD4800B6CE2D /* Post.swift */,
 				188DEC85249B1AEB00250310 /* Comment.swift */,
+				189F293124E153F60037C79D /* Notification.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -364,6 +367,7 @@
 				1826B8EE23EB19ED00F4087B /* SignUpVC.swift in Sources */,
 				18532EB32439E9510018E972 /* FollowLikeCell.swift in Sources */,
 				18BD797824C587C700286FC9 /* NotificationCell.swift in Sources */,
+				189F293224E153F60037C79D /* Notification.swift in Sources */,
 				186C4A1A2425A39D0018D2C2 /* User.swift in Sources */,
 				18B96AEB23F2F660002C4A04 /* MainTabVC.swift in Sources */,
 				18A189D323E737FC001237C1 /* AppDelegate.swift in Sources */,

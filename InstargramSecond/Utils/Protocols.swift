@@ -50,10 +50,10 @@ protocol FollowCellDelegate {
 //    func configureUserData(for cell: MessageCell)
 //}
 //
-//protocol Printable {
-//    var description: String { get }
-//}
-//
+protocol Printable {
+    var description: String { get }
+}
+
 
 
 

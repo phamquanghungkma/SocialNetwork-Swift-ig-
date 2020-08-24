@@ -9,9 +9,9 @@
 import UIKit
 import Firebase
 
-private let reuseIdentifier = "Cell"
+private let reuseIdentifier = "Cell" //cell id
 
-class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,FeedCellDelegate {
+class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, FeedCellDelegate {
    
   // MARK : - properties
     
@@ -22,11 +22,8 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
         collectionView.backgroundColor = .white
-
-
+        
         // Register cell classes
         self.collectionView!.register(FeedCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
@@ -76,8 +73,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! FeedCell
-        
-    
+       
         cell.delegate = self
         
         if viewSinglePost{
@@ -99,13 +95,13 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
         
         guard let post = cell.post else { return }
         guard let postId = post.postId else { return }
-        
+
         let followLikeVC = FollowLikeVC()
-        
+
         followLikeVC.viewingMode = FollowLikeVC.ViewingMode(index: 2)
         followLikeVC.postId = postId
         navigationController?.pushViewController(followLikeVC, animated: true)
-        
+
     }
     func handleUsernameTapped(for cell: FeedCell) {
         
@@ -149,9 +145,10 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
         }}
      
      func handleCommentTapped(for cell: FeedCell) {
-        guard let postId = cell.post?.postId else { return } // lay id cua post
+        
+        guard let post = cell.post else { return } // lay id cua post
         let commentVC = CommentVC(collectionViewLayout: UICollectionViewFlowLayout())
-        commentVC.postId = postId // gui postId sang
+        commentVC.post = post // gui postId sang
         navigationController?.pushViewController(commentVC, animated: true)
         
      }
@@ -182,9 +179,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
     func configureNavigationBar(){
         
         if !viewSinglePost{
-                self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Loggout", style: .plain, target: self, action: #selector(handleLoggout))
-                
-        }
+                self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Loggout", style: .plain, target: self, action: #selector(handleLoggout))}
         
 //        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "send"), style:.plain, target: self, action:#selector(handleShowMessages))
         
@@ -197,7 +192,6 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
         posts.removeAll(keepingCapacity: false)
         fetchPosts()
         collectionView.reloadData()
-        
     }
     
     @objc func handleShowMessages(){
@@ -206,7 +200,6 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
     }
     
     @objc func handleLoggout(){
-        
         // declare alert controllers
         let alertControler = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
@@ -263,19 +256,20 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,Fee
                  // sap xep list post
                  self.posts.sort { (post1, post2) -> Bool in
                  return post1.creationDate > post2.creationDate
-                    
                 }
                 // stop refreshing
                 self.collectionView.refreshControl?.endRefreshing()
-                
-                
+
                  //  print("Caption is:",post.caption)
                 self.collectionView.reloadData()
             }
         }
     }
     
-
-    
-    
 }
+/*
+ - Man hinh Feed, dung chung cho NewFeed cũng như chi tiết 1 bài đăng của mình
+ - dùng biến viewSinglePost để check: nếu true tức là màn hình chi tiết bài đăng, post sẽ có giá trị gửi từ bài viết sang
+ - nếu false tức là màn newfeed, dữ liệu các posts sẽ đc fetch về
+ - FeedVC conform FeedCellDelegate , vì thế cần implement các method trong FeedCellDelegate
+ */

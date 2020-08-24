@@ -20,16 +20,13 @@ class CommentVC:UICollectionViewController,UICollectionViewDelegateFlowLayout{
     
     var comments = [Comment]()
     // postId lay tu ben FeedVC gui sang
-    var postId: String?
+    var post: Post?
     
 
    
     lazy var containerView: UIView = {
         let containerView = UIView()
         containerView.frame = CGRect(x: 0, y: 0, width: 100, height: 50)
-        
-    
-        
         
         containerView.addSubview(postButton)
         postButton.anchor(top: nil, left: nil, bottom: nil, right: containerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 50, height: 0)
@@ -96,6 +93,7 @@ class CommentVC:UICollectionViewController,UICollectionViewDelegateFlowLayout{
           tabBarController?.tabBar.isHidden = false // unhidden tabBar
     }
     
+    // xử lý input view
     override var inputAccessoryView: UIView?{
         get{
             return containerView
@@ -120,8 +118,14 @@ class CommentVC:UICollectionViewController,UICollectionViewDelegateFlowLayout{
         let height = max(40 + 8 + 8, estimatedSize.height) // return the greater of two values
         
         
+        
         return CGSize(width: view.frame.width, height: height)
-
+        /*
+            cell có 1 bên là ảnh đại diện 1 bên là nội dung
+             ta sẽ check xem nếu height của nội dung nhỏ hơn height của ảnh thì lấy height của ảnh làm height của cell, ngược lại thì lấy height của nội dung
+         
+         */
+        
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -138,25 +142,29 @@ class CommentVC:UICollectionViewController,UICollectionViewDelegateFlowLayout{
     
     // MARK: Handler
     @objc func handleUploadComment(){
-        print("Handle upload comment")
-        guard let postId = self.postId else { return }
+        guard let post = self.post else { return }
+        guard let postId = post.postId else { return }
         guard let commentText = commentTextField.text else { return } // noi dung cua comment
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let creationDate = Int(NSDate().timeIntervalSince1970)
         
+        // gửi lên API, nội dung comment, postId, uid, time
+        
         let values = ["commentText":commentText,
                       "creationDate":creationDate,
-                    "uid":uid] as [String:Any]
+                      "uid":uid]         as [String:Any]
          
         COMMENT_REF.child("postId : \(postId)").childByAutoId().updateChildValues(values) { (err,ref) in
+            self.uploadCommentNotificationToServer()
             self.commentTextField.text  = nil
         }
         
     }
     
     func fetchComments(){
-        print("setp1")
-        guard let postId = self.postId else { return }
+        
+        guard let post = self.post else { return }
+        guard let postId = post.postId else { return }
         COMMENT_REF.child("postId : \(postId)").observe(.childAdded) { (snapshot) in
             
             
@@ -176,6 +184,35 @@ class CommentVC:UICollectionViewController,UICollectionViewDelegateFlowLayout{
         }
         
     }
+    
+    func uploadCommentNotificationToServer(){
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        guard let postId = self.post?.postId else { return }
+        guard let uid = post?.user?.uid else { return } // uid cua post
+        let creationDate = Int(NSDate().timeIntervalSince1970);
+        
+        
+        //notification values
+        let values = ["checked":0,
+                      "creationDate":creationDate,
+                      "uid":currentUid,
+                      "type":COMMENT_INT_VALUE,
+                      "postId": postId] as [String:Any]
+            
+        //upload comment notification to server
+        if uid != currentUid{
+            NOTIFICATIONS_REF.child(uid).childByAutoId().updateChildValues(values)
+            
+        }
+        
+    }
+   
+    
+    
+    
+    
    
 }
+
+
 

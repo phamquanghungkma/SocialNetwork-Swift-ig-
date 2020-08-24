@@ -22,9 +22,9 @@ class NotificationCell: UITableViewCell {
     let notificationLabel: UILabel = {
        let label = UILabel()
         
-        let attributedText = NSMutableAttributedString(string:"Bin Ladel",attributes:[NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12)])
+        let attributedText = NSMutableAttributedString(string:"Bin Ladel ",attributes:[NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12)])
         
-        attributedText.append(NSAttributedString(string:"Comments on your post",attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12)]))
+        attributedText.append(NSAttributedString(string:"Comments on your post ",attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12)]))
         
          attributedText.append(NSAttributedString(string:"2d",attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12), NSAttributedString.Key.foregroundColor:UIColor.lightGray]))
         label.attributedText = attributedText

@@ -71,6 +71,7 @@ class FeedCell: UICollectionViewCell {
     
     lazy var postImageView: CustomImageView = {
               let iv = CustomImageView()
+        iv.layer.cornerRadius = 25
               iv.contentMode = .scaleAspectFill
               iv.clipsToBounds = true
               iv.backgroundColor = .lightGray
@@ -150,7 +151,7 @@ class FeedCell: UICollectionViewCell {
         super.init(frame: frame)
         
         addSubview(profileImageView)
-        profileImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+        profileImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
         profileImageView.layer.cornerRadius = 40/2
         
         addSubview(usernameButton)
@@ -162,7 +163,7 @@ class FeedCell: UICollectionViewCell {
         optionsButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
         
         addSubview(postImageView)
-        postImageView.anchor(top: profileImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        postImageView.anchor(top: profileImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
         postImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1).isActive = true
 //        postImageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1).isActive = true
         
@@ -231,10 +232,10 @@ class FeedCell: UICollectionViewCell {
         stackView.distribution = .fillProportionally
         
         addSubview(stackView)
-        stackView.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 120, height: 50)
+        stackView.anchor(top: postImageView.bottomAnchor, left: postImageView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 120, height: 50)
         
         addSubview(savePostButton)
-        savePostButton.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 20, height: 24)
+        savePostButton.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: postImageView.rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 20, height: 24)
         
     }
     

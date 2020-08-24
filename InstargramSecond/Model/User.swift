@@ -76,6 +76,8 @@ class User {
              let postId = snapshot.key
              USER_FEED_REF.child(currentUid).child(postId).removeValue()
          }
+        
+        
      }
     func checkIfUserIsFollowed(completion: @escaping(Bool) ->()) {
            guard let currentUid = Auth.auth().currentUser?.uid else { return }
@@ -107,7 +109,10 @@ class User {
          
          
          NOTIFICATIONS_REF.child(self.uid).childByAutoId().updateChildValues(values)
+        
      }
+    
+   
     
     
     
