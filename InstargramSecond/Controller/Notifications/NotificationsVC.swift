@@ -9,7 +9,10 @@
 import UIKit
 import Firebase
 private let reuseIdentifer = "NotificationCell"
-class NotificationsVC: UITableViewController {
+class NotificationsVC: UITableViewController, NotificationCellDelegate {
+    
+    
+    
     
     
     // MARK: Properties
@@ -29,6 +32,14 @@ class NotificationsVC: UITableViewController {
     }
 
     // MARK: - Table view data source
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // click vao 1 dong se chuyen sang trang ca nhan cua nguoi gui notification
+        let notification = notifications[indexPath.row]
+        let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
+        userProfileVC.user = notification.user
+        navigationController?.pushViewController(userProfileVC, animated: true)
+    }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
@@ -42,7 +53,39 @@ class NotificationsVC: UITableViewController {
         
         let cell = tableView.dequeueReusableCell(withIdentifier:reuseIdentifer , for: indexPath) as! NotificationCell
         cell.notification = notifications[indexPath.row]
+        cell.delegate = self
         return cell
+    }
+    
+    // MARK: NotificationCellDelegate Protocol
+    func handleFollowTapped(for cell: NotificationCell) {
+        guard let  user =  cell.notification?.user else { return }
+        if user.isFollowed {
+            user.unfollow()
+            cell.followButton.setTitle("Follow", for: .normal)
+            cell.followButton.setTitleColor(.white, for: .normal)
+            cell.followButton.layer.borderWidth = 0
+            cell.followButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
+        } else {
+            user.follow()
+            cell.followButton.setTitle("Following", for: .normal)
+            cell.followButton.setTitleColor(.black, for: .normal)
+            cell.followButton.layer.borderWidth = 0.5
+            cell.followButton.layer.borderColor = UIColor.lightGray.cgColor
+            cell.followButton.backgroundColor = .white
+            
+        }
+        
+    }
+    
+    func handlePostTapped(for cell: NotificationCell) {
+        guard let post = cell.notification?.post else { return }
+        
+        let feedController = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+        feedController.viewSinglePost = true // day la trang ca nhan
+        feedController.post = post
+        navigationController?.pushViewController(feedController, animated: true)
+        
     }
     
     

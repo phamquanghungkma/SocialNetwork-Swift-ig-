@@ -6,6 +6,8 @@
 //  Copyright © 2018 Stephan Dowless. All rights reserved.
 //
 
+// All of protocol in this defines the delegate's resposibilites
+
 protocol FeedCellDelegate {
     func handleUsernameTapped(for cell: FeedCell)
     func handleOptionsTapped(for cell: FeedCell)
@@ -24,10 +26,10 @@ protocol UserProfileHeaderDelegate {
     func handleFollowingTapped(for header: UserProfileHeader)
 }
 
-//protocol NotificationCellDelegate {
-//    func handleFollowTapped(for cell: NotificationCell)
-//    func handlePostTapped(for cell: NotificationCell)
-//}
+protocol NotificationCellDelegate {
+    func handleFollowTapped(for cell: NotificationCell)
+    func handlePostTapped(for cell: NotificationCell)
+}
 
 //protocol CommentInputAccesoryViewDelegate {
 //    func didSubmit(forComment comment: String)

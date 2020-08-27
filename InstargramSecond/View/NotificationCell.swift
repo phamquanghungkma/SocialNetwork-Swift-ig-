@@ -10,6 +10,7 @@ import UIKit
 
 class NotificationCell: UITableViewCell {
     //MARK : Properties
+    var delegate: NotificationCellDelegate?
     
     let profileImageView: CustomImageView = {
         let iv = CustomImageView()
@@ -60,24 +61,35 @@ class NotificationCell: UITableViewCell {
         return button
     }()
     
-    let postImageView: CustomImageView = {
+    lazy var  postImageView: CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
+        
+        let postTap = UITapGestureRecognizer(target: self,action:#selector(handlePostTapped))
+        postTap.numberOfTapsRequired = 1
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(postTap)
         return iv
     }()
     //MARK: - Handlers
     @objc func handleFollowTapped(){
-        print("Handle follow tapped")
+        delegate?.handleFollowTapped(for: self)
+    }
+    @objc func handlePostTapped(){
+        delegate?.handlePostTapped(for: self)
     }
     
+    // check xem thông báo loại nào
+    // nếu thông báo like, comment bài viết sẽ hiển thị ảnh bài viết đó
+    // nếu thông báo có người follow mình thì sẽ hiểu thị trạng thái
     func configurNotificationType(){
+        
         guard let notification = self.notification else { return }
         guard let user = notification.user else { return }
         
         var anchor : NSLayoutXAxisAnchor!
-        
         if notification.notificationType != .Follow {
             // notification type is comment or like
             // neu thong bao ve != follow thi sẽ hiển thị ảnh
@@ -93,17 +105,36 @@ class NotificationCell: UITableViewCell {
             followButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
             followButton.layer.cornerRadius = 3
             anchor = followButton.leftAnchor
+            
+            user.checkIfUserIsFollowed { (followed) in
+                 if followed {
+                    // configures follow button  for followed user
+                    self.followButton.setTitle("Following", for: .normal)
+                    self.followButton.setTitleColor(.black, for: .normal)
+                    self.followButton.layer.borderWidth = 0.5
+                    self.followButton.layer.borderColor = UIColor.lightGray.cgColor
+                    self.followButton.backgroundColor = .white
+                                
+                    } else {
+                    // configures follow button  for non followed user
+                    self.followButton.setTitle("Follow", for: .normal)
+                    self.followButton.setTitleColor(.white, for: .normal)
+                    self.followButton.layer.borderWidth = 0
+                    self.followButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
+
+                        }
+            }
+            
         }
         addSubview(notificationLabel)
         notificationLabel.anchor(top: nil, left:  profileImageView.rightAnchor, bottom: nil, right: anchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
             notificationLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
     }
-    
     func configureNotificationLabel(){
         
         guard let notification = self.notification else { return }
-        guard let user = notification.user else { return }
+        guard let user = notification.user else { return } // người tác động dẫn đến phát sinh cái //notification đó
          let notificationMessage = notification.notificationType.description
         guard let username = user.username else { return }
         
@@ -119,6 +150,7 @@ class NotificationCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style:style,reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
         
         addSubview(profileImageView)
         profileImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop:0 , paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)

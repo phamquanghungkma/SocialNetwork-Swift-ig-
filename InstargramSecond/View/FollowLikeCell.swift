@@ -15,20 +15,13 @@ class FollowLikeCell: UITableViewCell {
     
     
     var user: User? {
-           
-           
            didSet{
-               
                guard let profileImageUrl = user?.profileImageUrl else {return}
                guard let username = user?.username else {return}
                guard let fullname = user?.name else {return}
-               
                profileImageView.loadImage(with: profileImageUrl)// load anh dai dien
-               
                self.textLabel?.text = username
                self.detailTextLabel?.text = fullname
-            
-            
             // hide follow button for  current user
             if user?.uid == Auth.auth().currentUser?.uid{
                 followButton.isHidden = true

@@ -94,10 +94,7 @@ class SearchVC: UITableViewController {
                 self.users.append(user)
                 self.tableView.reloadData()
             })
-            
-       
-            
-        
+          
     }
 }
 }
