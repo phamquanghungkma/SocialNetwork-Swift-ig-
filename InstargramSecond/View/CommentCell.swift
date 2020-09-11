@@ -18,6 +18,7 @@ class CommentCell: UICollectionViewCell {
             guard let profileImageUrl = user.profileImageUrl else { return }
             guard let username = user.username else { return }
             guard let commentText = comment?.commentText else  { return }
+            guard let timestamp = getCommentTimeStamp() else { return }
             
             
             let attributedText = NSMutableAttributedString(string:"\(username) :",attributes:[NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 14)])
@@ -25,7 +26,7 @@ class CommentCell: UICollectionViewCell {
             attributedText.append(NSAttributedString(string:" \(commentText)",attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 14),NSAttributedString.Key.foregroundColor:UIColor.black]))
             
                 // time
-            attributedText.append(NSAttributedString(string:" 2d",attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12),NSAttributedString.Key.foregroundColor:UIColor.lightGray]))
+            attributedText.append(NSAttributedString(string:"\(timestamp)",attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12),NSAttributedString.Key.foregroundColor:UIColor.lightGray]))
             
             commentTextView.attributedText = attributedText
             
@@ -50,6 +51,19 @@ class CommentCell: UICollectionViewCell {
         tv.isScrollEnabled = false
         return tv
     }()
+    
+    func getCommentTimeStamp() -> String?{
+        // date la thoi gian tu luc action dien ra den hien tai
+        guard let  comment = self.comment else { return nil }
+        
+        let dateFormatter = DateComponentsFormatter()
+        dateFormatter.allowedUnits = [.second,.minute,.hour,.day,.weekOfMonth]
+        dateFormatter.maximumUnitCount = 1
+        dateFormatter.unitsStyle = .abbreviated
+        let now = Date() // time hien tai
+        return  dateFormatter.string(from: comment.creationDate, to: now)
+
+    }
     
     override init(frame: CGRect) {
         super.init(frame:frame)

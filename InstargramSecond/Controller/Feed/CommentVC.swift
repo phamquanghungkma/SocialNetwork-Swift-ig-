@@ -135,7 +135,7 @@ class CommentVC:UICollectionViewController,UICollectionViewDelegateFlowLayout{
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifer, for: indexPath) as! CommentCell
         cell.comment = comments[indexPath.item]
-        cell.backgroundColor = .blue
+//        cell.backgroundColor = .blue
         return cell
          
     }

@@ -12,11 +12,9 @@ private let reuseIdentifer = "NotificationCell"
 class NotificationsVC: UITableViewController, NotificationCellDelegate {
     
     
-    
-    
-    
     // MARK: Properties
     var notifications = [Notification]()
+    var timer : Timer?
     
 
     override func viewDidLoad() {
@@ -88,6 +86,26 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
         
     }
     
+    // MARK : -Handlers
+    
+    func handleReloadTable(){
+        self.timer?.invalidate()
+        
+        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(handleSortNotifications), userInfo: nil, repeats: false)
+    }
+    @objc func printSuper(){
+        print("Timer is running ")
+    }
+    
+    
+    @objc func handleSortNotifications(){
+        self.notifications.sort { (notification1, notification2) -> Bool in
+            return notification1.creationDate > notification2.creationDate
+        }
+        self.tableView.reloadData()
+        
+    }
+    
     
     // MARK : - API
     func fetchNotifcation(){
@@ -103,13 +121,15 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
                     Database.fetchPost(with: postId) { (post) in
                         let notification = Notification(user: user, post: post, dictionary: dictionary)
                         self.notifications.append(notification)
-                        self.tableView.reloadData()
+                        self.handleReloadTable()
                     }
                 } else {
                     let notification = Notification(user: user, dictionary: dictionary)
                     self.notifications.append(notification)
-                    self.tableView.reloadData()
+                    self.handleReloadTable()
+
                 }
+
             }
 
         }

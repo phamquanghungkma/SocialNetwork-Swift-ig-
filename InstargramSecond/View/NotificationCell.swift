@@ -29,6 +29,7 @@ class NotificationCell: UITableViewCell {
             // config notification message
             configureNotificationLabel()
             
+            
             configurNotificationType()
             guard let post = notification?.post else { return }
             print("post is : \(post)" )
@@ -131,17 +132,32 @@ class NotificationCell: UITableViewCell {
             notificationLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
     }
+    
+    func getTimeStamp() -> String?{
+        // date la thoi gian tu luc action dien ra den hien tai
+        guard let notification = self.notification else { return nil }
+        
+        let dateFormatter = DateComponentsFormatter()
+        dateFormatter.allowedUnits = [.second,.minute,.hour,.day,.weekOfMonth]
+        dateFormatter.maximumUnitCount = 1
+        dateFormatter.unitsStyle = .abbreviated
+        let now = Date() // time hien tai
+        return  dateFormatter.string(from: notification.creationDate, to: now)
+
+    }
+    
     func configureNotificationLabel(){
         
         guard let notification = self.notification else { return }
         guard let user = notification.user else { return } // người tác động dẫn đến phát sinh cái //notification đó
          let notificationMessage = notification.notificationType.description
         guard let username = user.username else { return }
+        guard let notificationDate = getTimeStamp() else { return }
         
         let attributedText = NSMutableAttributedString(string:username ,attributes:[NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12)])
                
             attributedText.append(NSAttributedString(string: notificationMessage ,attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12)]))
-            attributedText.append(NSAttributedString(string:"2d",attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12), NSAttributedString.Key.foregroundColor:UIColor.lightGray]))
+        attributedText.append(NSAttributedString(string:"\(notificationDate)",attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12), NSAttributedString.Key.foregroundColor:UIColor.lightGray]))
         notificationLabel.attributedText = attributedText
          
     }
@@ -151,6 +167,7 @@ class NotificationCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style:style,reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
+        
         
         addSubview(profileImageView)
         profileImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop:0 , paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)

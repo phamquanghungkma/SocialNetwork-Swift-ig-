@@ -16,16 +16,16 @@ class CustomImageView: UIImageView{
     
     func loadImage(with urlString: String){
         
-        //set email to nil
-        self.image = nil
+        //set image to nil
+        self.image = nil // UIImageView.image = nil
         
         //set lastImgUrlUsedToLoadImage
-        lastImgUrlUsedToLoadImage = urlString
+        lastImgUrlUsedToLoadImage = urlString // đường link ảnh lấy đc từ DB
            
            // check if image exist in cache ( check urlString if exist in Dictionary)
            if let cachedImage = imageCache[urlString]{
                self.image = cachedImage
-               return
+               return // thoat luon khoi cai ham nay
            }
            
            // url for image location
