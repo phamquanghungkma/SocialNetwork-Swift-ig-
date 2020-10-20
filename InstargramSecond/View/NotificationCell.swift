@@ -90,7 +90,8 @@ class NotificationCell: UITableViewCell {
         guard let notification = self.notification else { return }
         guard let user = notification.user else { return }
         
-        var anchor : NSLayoutXAxisAnchor!
+        var anchor: NSLayoutXAxisAnchor!
+        
         if notification.notificationType != .Follow {
             // notification type is comment or like
             // neu thong bao ve != follow thi sẽ hiển thị ảnh
@@ -98,6 +99,7 @@ class NotificationCell: UITableViewCell {
                      postImageView.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 40, height: 40)
                      postImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
             anchor = postImageView.leftAnchor
+            
         } else {
             // còn k thì sẽ tạo ra button
             // notification type is follow

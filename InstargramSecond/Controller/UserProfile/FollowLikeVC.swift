@@ -63,7 +63,7 @@ class FollowLikeVC : UITableViewController, FollowCellDelegate{
 //    MARK: -UITableView
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        68
+         return 68
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1

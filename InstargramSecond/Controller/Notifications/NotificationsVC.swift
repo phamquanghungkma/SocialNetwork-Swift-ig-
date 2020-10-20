@@ -93,9 +93,9 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
         
         self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(handleSortNotifications), userInfo: nil, repeats: false)
     }
-    @objc func printSuper(){
-        print("Timer is running ")
-    }
+//    @objc func printSuper(){
+//        print("Timer is running ")
+//    }
     
     
     @objc func handleSortNotifications(){

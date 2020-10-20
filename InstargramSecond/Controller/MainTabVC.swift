@@ -1,3 +1,4 @@
+
 //
 //  MainTabVC.swift
 //  InstargramSecond
@@ -5,11 +6,13 @@
 //  Created by Apple on 2/11/20.
 //  Copyright © 2020 Tofu. All rights reserved.
 //
-
 import UIKit
 import Firebase
 
+
+
 class MainTabVC: UITabBarController, UITabBarControllerDelegate{
+    let redDot = UIView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,11 +51,11 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate{
         viewControllers = [feedVC,searchVC,selectImageVC,notificationVC,userProfileVC]
         
         //tab bar tinit color
-        tabBar.tintColor = .black
+//        tabBar.tintColor = .black
     }
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        let index = viewControllers?.index(of: viewController)// thu tu tab i 
+        let index = viewControllers?.index(of: viewController)// thu tu tab i
         print("Index : \(index!)")
     
         // nếu select vào tab có index == 2 thì sẽ show ra cái modal
@@ -70,16 +73,39 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate{
         return true
     }
     
+    func configureNotificationDot(){
+        
+        if UIDevice().userInterfaceIdiom == .phone {
+            
+            let tabBarHeight = tabBar.frame.height
+            
+            if UIScreen.main.nativeBounds.height == 2436{
+                  // configure dot for iphone x
+                redDot.frame = CGRect(x: view.frame.width / 5 * 3 , y: view.frame.height - tabBarHeight, width: 6, height: 6)
+                
+                
+            } else {
+                // configure dot for other phone models
+                redDot.frame = CGRect(x: view.frame.width / 5 * 3 , y: view.frame.height - 16, width: 6, height: 6)
+
+            }
+            // create redDot
+            redDot.center.x = (view.frame.width / 5 * 3 + (view.frame.width / 5 ) / 2 )
+//            redDot.backgroundColor = UIColor(red:)
+        }
+        
+    }
+    
     // construct navigation controller
     func constructNavController(unselectedImage:UIImage,selectedImage:UIImage,rootViewController:UIViewController = UIViewController())->UINavigationController{
         // construc nav controller
         let navController = UINavigationController(rootViewController: rootViewController)
         navController.tabBarItem.image = unselectedImage
-        navController.tabBarItem.selectedImage = selectedImage
+        navController.tabBarItem.selectedImage = selectedImage.withRenderingMode(.alwaysOriginal) // set đúng màu của ảnh 
         navController.navigationBar.tintColor = .black
         
         return navController
-        // everytime we call this fucntion, it's going to return a navigation controller with whatever we set 
+        // everytime we call this fucntion, it's going to return a navigation controller with whatever we set
     }
     
     // check xem da đăng nhập hay chưa
@@ -103,3 +129,4 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate{
    
 
 }
+
